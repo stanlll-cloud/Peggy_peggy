@@ -1,4 +1,4 @@
-# Validation — Ricoh GR Customizer 0.7.0-en.2
+# Validation — Ricoh GR Customizer 0.7.0-en.3
 
 - UI TypeScript checks and Vite production build: passed.
 - Desktop Go tests: all six tested packages passed; two tools have no tests.
@@ -25,3 +25,11 @@ Then check first launch, permission prompts, navigation, preset import, preview,
 - The link uses target=_blank and rel=noopener noreferrer, with visible destination text and an accessible label.
 - No core/ files were modified.
 - The owner confirmed the previous edition opens on macOS; this rebuilt edition still needs a new Mac launch and click check.
+
+## Edition 3: Traditional Chinese
+
+- Added a full Traditional Chinese operation dictionary, defaulting to zh-TW with a persistent English switch.
+- Store advertisement copy and URL remain English and unchanged.
+- Dictionary key coverage is checked by TypeScript; interpolation and switching verified in a Node harness.
+- Rebuilt and ad-hoc signed for Intel and Apple silicon.
+- Mac visual and physical-camera validation remains pending.

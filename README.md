@@ -1,9 +1,10 @@
 # Ricoh GR Customizer
 
-Customize your Ricoh GR IV with an easy-to-use English Mac app.
+Customize your Ricoh GR IV with an easy-to-use Mac app with English and Traditional Chinese.
 
 ## Features
 
+- English / 繁體中文 interface
 - Import `.cube` LUTs and `.xmp` Look profiles
 - Add custom Image Control presets and aspect ratios
 - Customize power-off images
@@ -13,7 +14,7 @@ Customize your Ricoh GR IV with an easy-to-use English Mac app.
 
 ## Download
 
-[Download for Mac — Intel & Apple silicon](downloads/Ricoh-GR-Customizer-0.7.0-en.2.zip?raw=true)
+[Download for Mac — Intel & Apple silicon](downloads/Ricoh-GR-Customizer-0.7.0-en.3.zip?raw=true)
 
 Unzip and move **Ricoh GR Customizer.app** to Applications.
 

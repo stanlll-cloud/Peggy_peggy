@@ -3,7 +3,7 @@ import type { CameraModel, LangCode } from '@grmod/core';
 import { useRef, useState } from 'react';
 import { Busy, ConfirmDialog, Hint, Ico, Select, Toasts, useDismiss } from './components';
 import { host } from './host';
-import { LANG_LABEL, t } from './i18n';
+import { LANG_LABEL, t, useUiLanguage, setUiLanguage } from './i18n';
 import type { Key } from './i18n';
 import { CopiesPage } from './copies';
 import { BridgeBanner, BridgeDialog, FirmwareOnline, FirmwareRow, MODELS, modelLabel } from './firmware';
@@ -16,6 +16,7 @@ import {
 const gb = (n: number): string => (n >= 1e9 ? `${(n / 1e9).toFixed(n >= 1e10 ? 0 : 1)} GB` : `${Math.max(1, Math.round(n / 1e6))} MB`);
 
 function Sidebar() {
+  const uiLanguage = useUiLanguage();
   const page = useStore((s) => s.page);
   const model = useStore((s) => s.model);
   const lang = useStore((s) => s.lang);
@@ -41,6 +42,7 @@ function Sidebar() {
         />
       </div>
       <div className="side-foot">
+        <button className="about-link" aria-label="Switch interface language / 切換介面語言" onClick={() => setUiLanguage(uiLanguage === 'zh-TW' ? 'en' : 'zh-TW')}>{uiLanguage === 'zh-TW' ? 'English' : '繁體中文'}</button>
         <button className="about-link" onClick={() => setAbout(true)}>v{host.info?.version || ''}</button>
         <span className="grow" />
         <HelpMenu />
@@ -138,6 +140,7 @@ function HelpMenu() {
 }
 
 export function App() {
+  useUiLanguage();
   const page = useStore((s) => s.page);
   const ready = useStore((s) => s.ready);
   if (!host.available) return <div className="nohost">{t('hostMissing')}</div>;

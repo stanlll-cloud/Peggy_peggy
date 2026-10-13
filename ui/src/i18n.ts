@@ -1,3 +1,4 @@
+import { useSyncExternalStore } from 'react';
 const en = {
   app: 'Ricoh GR Customizer',
   navIC: 'Image Control', navWall: 'Power-Off Image', navScript: 'Open factory menu', navCopies: 'Firmware Backups',
@@ -94,10 +95,122 @@ const en = {
   tIcSoftT: 'Additions', tIcSoftB: 'Soft focus: adds "Soft Focus" to the ADJ lever, with off, low, medium and high. The effect cannot be seen in live view; it can be used together with the HDF filter.\nDate imprint: prints the date in the bottom right corner of the photo. Off after flashing; turn it on under Shooting Assist › Date Imprint, two styles.\nB&W Looks: unlocks the 6 black-and-white looks of the GR IV Monochrome.',
 };
 export type Key = keyof typeof en;
-// This distribution always uses English, regardless of the system language.
-const dict = en;
+const zhTW: Record<Key, string> = {
+  app: "Ricoh GR Customizer",
+  navIC: '影像控制', navWall: '關機畫面', navScript: '開啟工廠選單', navCopies: "韌體備份",
+  navRatio: '長寬比', ratioAdd: '新增比例', ratioFactory: '原廠', ratioGray: '灰色', ratioMax: '最多 {n} 個', ratioLine: '新增長寬比 {n}  ·  {l}',
+  ratioBad: '無法識別', ratioIsFactory: '原廠已有', ratioExtreme: '太窄', ratioQuick: '回看不支援', ratioMetering: '測光不支援', ratioConflict: '與其他比例衝突', ratioDup: '重複',
+  ratioNameBad: '僅限英文、數字、符號', ratioNameLong: '名稱太長', ratioPlaceholder: '長：寬',
+  copiesCardTab: '記憶卡', copiesPcTab: '電腦', copiesPc: "電腦上的備份", copiesEmptyCard: '這張卡上沒有被移開的檔案', copiesEmptyPc: '還沒有備份', copiesAll: '全選',
+  copiesCount: '{n} 個檔案 · {s}', copiesSelected: '已選 {n} 個 · {s}',
+  copiesDelete: '刪除', copiesDeleteAll: '全部刪除', copiesDeleteTitle: '刪除副本', copiesDeleteBody: "此操作會永久刪除所選檔案，無法復原。", copiesDeleting: '正在刪除…', copiesDeleted: '已刪除 {n} 個檔案 · {s}', copiesDeleteFailed: '{n} 個檔案沒有刪除',
+  copiesBackup: '備份到電腦', copiesBackingUp: '正在備份…', copiesBackedUp: '已備份 {n} 個檔案', copiesBackupFailed: '{n} 個檔案沒有備份', copiesOpenFolder: '開啟資料夾',
+  copyOfficial: '官方 1.11', copyModified: '修改版', copyUnknown: '無法識別', copyReading: '讀取中…', copyColor: '色彩已改', copyIcon: '圖示已改', copyName: '名稱已改', copyUnverified: '未透過校驗', copiesPickOne: "選取一個通過驗證的韌體檔案",
+  slotShortCY: '黃', slotShortCG: '綠', fileFirmware: '韌體', fileScript: '啟動指令碼', fileEntry: '工廠選單入口檔案', filePause: '輪換暫停標記', fileOther: '檔案',
+  scriptHint: "寫入後，按住 MENU 開啟相機，使用方向鍵將 Script 設為「Enable」。",
+  entryOnCard: '已在卡上', entryChip: '工廠選單入口',
+  firmware: '韌體', model: '機型', language: "相機選單語言", noFirmware: '未匯入',
+  dropFirmware: '拖入 fwdc248b.bin', dropFirmwareSub: '或點選選擇檔案', opening: '正在讀取韌體…',
+  badFirmware: '只支援官方 1.11 版 fwdc248b.bin', writeStock: '寫入原廠韌體', exportStock: '匯出原廠韌體',
+  fwBridge: '橋接韌體…', fwBridgeValue: '1.12 橋接', bridgeTitle: '1.12 橋接韌體', bridgeAttention: '注意！此功能僅提供給刷入官方最新韌體失敗的使用者。',
+  bridgeBody: '對於此類使用者，可以透過刷入橋接韌體的方式解決更新失敗問題。刷入橋接韌體後，請按住 MENU 鍵的同時按下開機鍵，刷入 1.12 韌體，成功後，取出記憶卡，回到 Ricoh GR Customizer，在左下角線上下載官方最新韌體，並按照正常流程操作新增功能即可。',
+  bridgeWait: '請閱讀 {n} 秒', bridgeMono: '不適用於 GR IV Monochrome', bridgeOpened: '這是 1.12 橋接韌體，不能用來寫入新功能，請線上下載官方最新韌體',
+  bridgeLoaded: '當前開啟的是 1.12 橋接韌體，它只用來讓相機升到 1.12，不能用來寫入新功能。', bridgeLoadedAction: '線上下載官方韌體',
+  bridgeNeedOfficial: '當前開啟的是 1.12 橋接韌體，不能用來寫入。請先下載官方最新韌體。', bridgeNeedBase: '生成橋接韌體需要官方 1.11 韌體，下載後會繼續寫入橋接韌體。', copyBridge: '1.12 橋接韌體',
+  fwPick: '選擇檔案…', fwOnline: '線上下載…', fwOnlineTitle: '線上下載韌體', fwOnlineLink: '線上下載', fwLooking: '正在查詢…', fwNone: '官網暫無該機型的韌體', fwNetError: '無法連線理光官網', retry: '重試',
+  fwUnsupported: '暫不支援', fwDownloading: '正在下載…', fwDownloaded: '已下載韌體 {v}', fwLicense: '下載即表示同意理光的軟體許可協議', download: '下載',
+  preset: '預設', dropPreset: '拖入 .xmp / .cube', converting: '轉換中…', remove: '移除', replace: '更換',
+  name: '名稱', icon: '圖示', iconKeep: '原圖示', iconText: '文字', iconImage: '圖片', styleFilm: '膠片', stylePlain: '純色', chooseImage: '選擇圖片',
+  preview: '預覽', deltaE: "色差 ΔE", original: '原始', previewPhoto: '照片', previewSwatch: "色票", compare: "調整前／後", choosePhoto: '選擇預覽照片', changePhoto: '更換預覽照片',
+  restoreWall: '恢復關機畫面', restoreWallTip: '{n} 張 · 記錄於 {d} · {c}', wallRestored: '已恢復關機畫面（{n} 張）', wallKept: '已記住卡上的關機畫面', restoreMissing: '記錄的關機畫面已丟失',
+  errNotXmp: '無法識別的檔案', errNoTable: '檔案裡沒有可轉換的色彩資料', errLookMissing: '此預設依賴 Lightroom 內的配置檔案，請匯入配置檔案本身', errUnsupportedTable: '不支援的色彩表格式',
+  errBadCube: '.cube 檔案格式有誤', errTooBig: '檔案太大', warnUnsupported: '未轉換', warnApprox: '近似',
+  nameTooLong: '最多 {n} 個字元', nameBadChar: '相機字型檔沒有：{c}',
+  wallAdd: '新增圖片', wallCrop: '裁切', wallFactory: '原廠畫面', wallEmpty: '拖入圖片', wallMax: '最多 9 張',
+  lowQuality: '畫質低', grain: '已加顆粒', softened: '已柔化', tooDetailed: '該機型的關機圖容量太小', encodeFailed: '無法編碼',
+  overlay: '相機疊加資訊', done: '完成', cancel: '取消', apply: '應用',
+  card: '記憶卡', noCard: '未檢測到記憶卡', showAll: '顯示全部磁碟', showCardsOnly: '只顯示記憶卡', refresh: '重新整理',
+  writeCard: '寫入記憶卡', exportFolder: '自訂匯出目錄', pickFolder: '選擇匯出位置', eject: '彈出', reveal: "在 Finder 中顯示",
+  roleFirmware: '韌體卡', roleWallpaper: '關機畫面卡', roleMixed: '韌體 + 關機畫面', roleEmpty: '空', roleOther: '',
+  building: '正在生成韌體…', writing: '正在寫入…', verifying: '正在校驗…',
+  written: '已寫入 {p}', exported: '已匯出到 {p}', verifyFailed: '寫入後校驗不一致', ejected: '已彈出記憶卡',
+  confirmTitle: '寫入韌體', confirmOk: '寫入', nothingToDo: '沒有要寫入的改動',
+  notFat32: '關機畫面需要 32 GB 以下的 FAT32 卡', hostMissing: "請從桌面開啟 Ricoh GR Customizer 應用程式", error: '出錯了',
+  slotCY: "Cinema (Yellow)", slotCG: "Cinema (Green)",
+  modelHDF: 'GR IV HDF', modelSTANDARD: 'GR IV', modelMONO: 'GR IV Monochrome',
+  changes: '改動', parked: '已移開 {n} 個檔案',
+  monoNoSlots: 'Monochrome 機型沒有這兩個彩色欄位',
+  cardReqTitle: '記憶卡要求', cardReq1: '自訂關機畫面僅支援最大 32 GB、FAT32 格式、MBR 分割表的 TF 卡', cardReq2: "在相機內格式化記憶卡之前，請先備份檔案。", cardReq3: '（相機開機時執行指令碼只認這種卡；MBR 分割表）', cardReq4: '建議在相機中格式化後再使用',
+  tourNext: '下一步', tourBack: '上一步', tourDone: '完成', tourSkip: '跳過', tourReplay: '本頁教學', tourHelp: '新手教學', tourRestart: '重新開始全部新手教學',
+  tOvWelcomeT: "歡迎使用 Ricoh GR Customizer", tOvWelcomeB: '此應用為理光 GR IV 系列使用者帶來了更多樣的影像控制、長寬比調整和自訂關機畫面',
+  tOvCardT: '記憶卡', tOvCardB: "請使用已在相機內格式化的記憶卡。若需格式化新卡，請先備份：格式化會清除所有檔案。自訂關機畫面需要容量不超過 32 GB、FAT32 格式及 MBR 分割表的 microSD 記憶卡。",
+  tOvFirmwareT: '韌體', tOvFirmwareB: "選擇相機型號，再按「下載」從理光取得官方韌體，也可拖入已下載的韌體檔案。橋接韌體僅供適用機型在更新失敗時使用，操作前請詳閱說明。",
+  tOvLangT: '相機語言', tOvLangB: '選擇相機選單使用的語言。影像控制裡改的名稱對應這個語言。',
+  tOvIcT: '影像控制', tOvIcB: '允許使用者將 .xmp / .cube（基於 sRGB / Rec.709）預設匯入相機，名稱和圖示可更改。（使用者可選將自己的預設替換相機的 Cinema (Yellow)/Cinema (Green) 欄位；如果預設內的檔案為空的話，會恢復到相機預設對應欄位的預設）',
+  tOvRatioT: '長寬比', tOvRatioB: '使用者可以在四個原廠比例之外新增自訂遮幅比例。',
+  tOvCombineT: '共同刷入', tOvCombineB: '影像控制和長寬比頁面中的內容可以被同時刷入，只需分別更改後，在任意頁面寫入記憶卡即可，之前的改動會被保留',
+  tOvWallT: '關機畫面', tOvWallB: '使用者能夠將自己的圖片放入相機關機介面，僅有一張時，會直接寫入相機；如有多張則會輪換播放，輪換功能依賴記憶卡；每次刷寫韌體後需要重新刷入自訂關機畫面',
+  tOvCopiesT: '韌體副本', tOvCopiesB: '每次寫卡時，會產生衝突的舊檔案可在這裡檢視、備份、刪除或重新寫回記憶卡',
+  tOvExportT: '自訂匯出目錄', tOvExportB: '把修改後的檔案放到您選擇的目錄下',
+  tOvWriteT: '寫入記憶卡', tOvWriteB: '將當前的所有可用修改寫入到記憶卡，舊檔案會被移動到GRMOD資料夾內，可在韌體備份頁面中管理',
+  tOvHelpT: '新手教學', tOvHelpB: '如果在某一階段忘了該如何操作，點選此處即可回顧此教學；也可以從這裡重新開始全部教學',
+  tIcStockT: '當前韌體', tIcStockB: '“⋯”中可以寫入或匯出原廠韌體',
+  tIcSlotT: '欄位', tIcSlotB: '可自訂的預設欄位，點選可選中當前欄位並在右側預覽效果',
+  tIcNameT: '名稱', tIcNameB: '相機選單裡顯示的名稱，留空保持原名。',
+  tIcPresetT: '預設', tIcPresetB: '拖入或點選選擇 .xmp / .cube（基於 sRGB / Rec.709）匯入',
+  tIcIconT: '圖示', tIcIconB: '可選擇原圖示、文字或圖片；可選膠片邊框',
+  tIcExtraT: '新增欄位', tIcExtraB: '可選擇增加1-6個額外的濾鏡匯入槽',
+  tIcTabsT: '欄位選擇', tIcTabsB: '切換右側顯示的欄位，和點左邊的卡片效果相同。',
+  tIcModeT: "預覽模式", tIcModeB: "以照片或 24 色色票預覽預設效果。",
+  tIcPreviewT: '預覽', tIcPreviewB: "拖曳分隔線比較調整前後的效果，連按兩下可置中，也可選擇自己的照片。",
+  tIcWriteT: '寫入記憶卡', tIcWriteB: '生成韌體並寫入。寫入後，將相機關機，插入記憶卡，按住 MENU 的同時開機執行升級。除自訂關機畫面外，所有改動將寫在同一個韌體裡，移除記憶卡後依然生效。',
+  tRatioFactoryT: '原廠比例', tRatioFactoryB: '新增的比例將排在它們後面',
+  tRatioAddT: '新增比例', tRatioAddB: '新增一行，最多 8 個。',
+  tRatioCommonT: '常用比例', tRatioCommonB: '點選即可快速新增',
+  tRatioRowT: '比例和名稱', tRatioRowB: '左邊填寫比例，中間輸入在選單中顯示的名稱，右邊顯示照片在當前長寬比下的最大解析度',
+  tRatioBackgroundT: '背景', tRatioBackgroundB: '您可在照片和純灰背景之間切換',
+  tRatioFrameT: '取景範圍', tRatioFrameB: '此處為取景範圍示例，您可將自己的照片拖入此處。',
+  tWallEntryT: '開啟工廠選單', tWallEntryB: '第一次使用自訂關機畫面前，先在這裡把入口檔案寫入記憶卡，再按上面的提示在相機上把 Script 改為“Enable”。之後寫韌體或關機畫面時，入口檔案會被自動移開',
+  tWallAddT: '新增圖片', tWallAddB: '點選新增或拖入圖片，最多9張，您也可以將原廠畫面放入輪換',
+  tWallCardT: '圖片', tWallCardB: '右上角可以裁切、移除；拖動圖片調整順序，開機時按這個順序輪換。',
+  tWallWriteT: '寫入記憶卡', tWallWriteB: '寫入圖片和啟動指令碼，需要先用上方的“開啟工廠選單”開啟 Script，僅有一張自訂圖時，會直接寫入相機；如有多張則會輪換播放，輪換功能依賴記憶卡',
+  tCopiesTabsT: '位置', tCopiesTabsB: '記憶卡上被移開的檔案，或者電腦上的備份。',
+  tCopiesAllT: '全選', tCopiesAllB: '勾選或取消當前列表裡的全部檔案。',
+  tCopiesListT: '副本', tCopiesListB: '按寫入時間分組。韌體會被讀出來辨認：官方、修改版（改了什麼）或無法識別。勾選後在底部操作。',
+  tCopiesActionsT: '操作', tCopiesActionsB: '備份到電腦、刪除（刪除後無法恢復），或者勾選一個韌體，將其寫回記憶卡。',
+  aboutBody: "Ricoh GR Customizer 社群版本，提供英文及繁體中文介面。基於 Maxwooow/Ricoh-GRMod，與理光或 Adobe 無關。修改韌體的風險由使用者自行承擔。",
+  aboutCredits: '特別鳴謝：radium-wang/ricoh-gr4-firmware-analysis-and-feature-expansion；DoYitNow/gr-custom-tool；樣張來源DPReview；圖示字型 Barlow Condensed',
+  navSoft: '柔焦', softWeak: '弱', softMedium: '中', softStrong: '強', softCustom: '自訂', softLine: '柔焦  ·  清晰度 {l}', softLevels: '清晰度 {l}',
+  softAdjSub: '直出模擬柔光濾鏡效果', softAdjLine: '柔焦  ·  ADJ 撥杆（關 / 弱 / 中 / 強）',
+  navDate: "日期戳記", dateSub: "在照片上印上日期", dateLine: '時間戳  ·  拍攝輔助 › 拍攝時間戳（\'26 10 08 / 2026.10.08 17:34）',
+  navMono: "黑白風格", monoSub: '解鎖 GR IV Monochrome 的照片風格', monoLine: '黑白預設  ·  解鎖 GR IV Monochrome 的照片風格',
+  extraTitle: '新增欄位', extraSub: '在 Cinema 之後再加影像控制欄位，最多 {n} 個', extraAdd: '新增欄位', extraCountLabel: '新增 {n} 個', extraNone: '不新增',
+  prevSlot: '上一個欄位', nextSlot: '下一個欄位',
+  extraSlot: '新增欄位 {n}', extraNameLong: '最多 12 個字元', extraNameBad: '僅限英文、數字、符號', extraNeedsPreset: '需要匯入預設', extraNeedsIcon: '需要圖示',
+  extraMax: '最多新增 {n} 個欄位', extraIncomplete: '有新增欄位還沒準備好（預設、名稱或圖示）', extraLine: '新增影像控制欄位 {n}  ·  {l}', extraRemove: '刪除這個欄位',
+  tIcSoftT: '附加功能', tIcSoftB: '柔焦：開啟後，可將“柔焦”效果增添到 ADJ 快捷選單，有關、弱、中、強四檔，效果無法實時預覽，可與 HDF 濾鏡同時啟用。\n時間戳：在照片右下角列印日期。刷入後預設關閉，在“拍攝輔助 › 拍攝時間戳”裡開啟，可選兩種樣式。\n黑白風格：解鎖 GR IV Monochrome 機型的 6 個黑白風格。',
+};
+
+export type UiLanguage = 'en' | 'zh-TW';
+function savedLanguage(): UiLanguage {
+  try { return localStorage.getItem('ricoh-gr-ui-language') === 'en' ? 'en' : 'zh-TW'; }
+  catch { return 'zh-TW'; }
+}
+let uiLanguage: UiLanguage = savedLanguage();
+document.documentElement.lang = uiLanguage;
+const listeners = new Set<() => void>();
+export function useUiLanguage(): UiLanguage {
+  return useSyncExternalStore((fn) => { listeners.add(fn); return () => { listeners.delete(fn); }; }, () => uiLanguage);
+}
+export function setUiLanguage(value: UiLanguage): void {
+  uiLanguage = value;
+  try { localStorage.setItem('ricoh-gr-ui-language', value); } catch { /* language still works in memory */ }
+  document.documentElement.lang = value;
+  for (const notify of listeners) notify();
+}
+
 export function t(key: Key, vars?: Record<string, string | number>): string {
-  let s: string = dict[key] ?? key;
+  let s: string = (uiLanguage === 'zh-TW' ? zhTW : en)[key] ?? key;
   if (vars) for (const k of Object.keys(vars)) s = s.replace(`{${k}}`, String(vars[k]));
   return s;
 }

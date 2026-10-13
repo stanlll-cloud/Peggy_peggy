@@ -1,4 +1,4 @@
-# Ricoh GR Customizer — 0.7.0-en.2
+# Ricoh GR Customizer — 0.7.0-en.3
 
 An English-language community edition of [GR Mod](https://github.com/Maxwooow/Ricoh-GRMod).
 Upstream commit: 0d5c4494df6967e434eb73743814bbbb3bb1117d.
@@ -6,9 +6,9 @@ This edition is not an official Ricoh or Adobe product.
 
 ## Changes
 
-- The interface always uses English, including on Chinese-language systems.
+- The interface defaults to Traditional Chinese, with an English switch at the bottom of the sidebar. The selected language is remembered.
 - Simple photography terms: Preset, Profile, Crop, Aspect Ratio, Swatches, Before / After, Grain, Soft Focus, and B&W Looks.
-- English guides, errors, camera-language labels, browser compatibility notice, and macOS permission descriptions.
+- Traditional Chinese and English operation labels, guides, and errors. The More Color Recipes store banner remains English in both languages.
 - New projects default to English camera-menu labels. Existing saved projects keep their camera language.
 - The original firmware-processing code is retained.
 - A visible More Color Recipes banner links to https://luts-maker.uk on the Image Control page. The link opens on click only; no store content is embedded or sent camera data.
@@ -16,7 +16,7 @@ This edition is not an official Ricoh or Adobe product.
 
 ## Install on macOS
 
-1. Extract Ricoh-GR-Customizer-0.7.0-en.2.zip.
+1. Extract Ricoh-GR-Customizer-0.7.0-en.3.zip.
 2. Move Ricoh GR Customizer.app to Applications. The displayed application name is Ricoh GR Customizer.
 3. Open the app. If macOS blocks it, use System Settings > Privacy & Security > Open Anyway.
 4. Allow access to removable volumes when prompted.
