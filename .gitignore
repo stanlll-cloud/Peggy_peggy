@@ -1,0 +1,7 @@
+node_modules
+dist
+*.exe
+core/testdata/private
+shell/web
+scratch
+__pycache__/

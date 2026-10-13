@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Ricoh GR Customizer</title>
+    <link rel="icon" type="image/png" href="./icon.png" />
+    <script src="/host.js"></script>
+    <script>
+      // A browser too old for Ricoh GR Customizer (e.g. Safari 13 on macOS 10.13): say so instead of a blank window.
+      (function () {
+        var ok = typeof BigInt === 'function' && typeof Worker === 'function' && !!(window.crypto && window.crypto.subtle) && typeof Promise.allSettled === 'function';
+        if (ok) return;
+        window.__GRMOD_OLD_BROWSER__ = true;
+        document.addEventListener('DOMContentLoaded', function () {
+          document.body.innerHTML = '<div style="font:15px/1.7 -apple-system,BlinkMacSystemFont,sans-serif;max-width:520px;margin:18vh auto;padding:0 24px;color:#222">' +
+            '<p style="font-size:18px;font-weight:600;margin:0 0 8px">Ricoh GR Customizer</p>' +
+            '<p style="margin:0;color:#666">This browser is too old for Ricoh GR Customizer. Install Chrome, Microsoft Edge or Firefox, then open Ricoh GR Customizer again.</p></div>';
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
