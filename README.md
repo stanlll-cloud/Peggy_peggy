@@ -16,9 +16,11 @@ Customize your Ricoh GR IV with an easy-to-use Mac app with English and Traditio
 
 [Download for Mac — Intel & Apple silicon](downloads/Ricoh-GR-Customizer-0.7.0-en.3.zip?raw=true)
 
-Unzip and move **Ricoh GR Customizer.app** to Applications.
+Unzip and open **01-USER-GUIDE-English.pdf** first. The guide and **00-START-HERE.txt** are beside the app.
 
-**Beta:** Camera functions still require testing.
+Move **Ricoh GR Customizer.app** to Applications.
+
+**Currently tested models:** Ricoh GR IV and Ricoh GR IV HDF.
 
 Based on [Maxwooow/Ricoh-GRMod](https://github.com/Maxwooow/Ricoh-GRMod). Original firmware-processing code retained. Not an official Ricoh product.
 

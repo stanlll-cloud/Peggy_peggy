@@ -1,0 +1,17 @@
+RICOH GR CUSTOMIZER - START HERE
+
+Currently tested models: Ricoh GR IV and Ricoh GR IV HDF.
+
+1. Open 01-USER-GUIDE-English.pdf first.
+   It contains installation steps, camera settings, FAQs, and Firmware vs. Script instructions.
+
+2. Move Ricoh GR Customizer.app to your Applications folder, then open it.
+   If macOS blocks it, go to System Settings > Privacy & Security > Open Anyway.
+
+3. The interface supports Traditional Chinese and English.
+   Switch languages at the bottom of the sidebar.
+
+More color recipes: https://luts-maker.uk
+
+This is a community beta. Read the guide before writing firmware to a card.
+Complete corresponding source and license notices are included in this package.
