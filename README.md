@@ -25,3 +25,7 @@ Move **Ricoh GR Customizer.app** to Applications.
 Based on [Maxwooow/Ricoh-GRMod](https://github.com/Maxwooow/Ricoh-GRMod). Original firmware-processing code retained. Not an official Ricoh product.
 
 [Guide](ENGLISH-EDITION.md) · [Technical docs](UPSTREAM-README.md) · [GPL-2.0 license](LICENSE)
+
+## More Color Recipes
+
+Explore LUTs and color presets at **[LUTs Maker →](https://luts-maker.uk)**.
