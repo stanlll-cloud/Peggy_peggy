@@ -9,6 +9,7 @@ import { CopiesPage } from './copies';
 import { BridgeBanner, BridgeDialog, FirmwareOnline, FirmwareRow, MODELS, modelLabel } from './firmware';
 import { CropEditor, ImageControlPage, RatioPage, WallpaperPage } from './pages';
 import { Tour, replayTour, restartTours } from './tour';
+import { UpdatePill, UpdateWatcher, checkForUpdate } from './updates';
 import {
   askForOfficial, bridgeLoaded, backupCopies, extrasOn, canRestoreWall, copyList, deleteCopies, hasNameErrors, hasRatioErrors, ratioSpecs, revealBackups, writableCopy, writeCopy, outputFirmware, outputWallpaper, pendingChanges, refreshVolumes, restoreCardWall, selectVolume, setLang, setModel, setPage, setShowAll, useStore, wallReady,
 } from './store';
@@ -44,6 +45,7 @@ function Sidebar() {
       <div className="side-foot">
         <button className="about-link" aria-label="Switch interface language / 切換介面語言" onClick={() => setUiLanguage(uiLanguage === 'zh-TW' ? 'en' : 'zh-TW')}>{uiLanguage === 'zh-TW' ? 'English' : '繁體中文'}</button>
         <button className="about-link" onClick={() => setAbout(true)}>v{host.info?.version || ''}</button>
+        <UpdatePill />
         <span className="grow" />
         <HelpMenu />
       </div>
@@ -133,6 +135,7 @@ function HelpMenu() {
         <div className="menu up" role="menu">
           <button role="menuitem" onClick={() => { setOpen(false); replayTour(); }}>{t('tourReplay')}</button>
           <button role="menuitem" onClick={() => { setOpen(false); restartTours(); }}>{t('tourRestart')}</button>
+          {host.available && <button role="menuitem" onClick={() => { setOpen(false); void checkForUpdate(false); }}>{t('updCheck')}</button>}
         </div>
       )}
     </div>
@@ -155,6 +158,7 @@ export function App() {
       <CropEditor />
       <FirmwareOnline />
       <BridgeDialog />
+      <UpdateWatcher />
       <ConfirmDialog />
       <Tour />
       <Busy />
