@@ -21,7 +21,9 @@ export interface SlotState { preset?: PresetState; names: Partial<Record<LangCod
  * An added Image Control slot (style 34, 35, ... in the camera): `key` is `x-` and a random id;
  * `name` as typed (empty: the default name of its place), one name for every language.
  */
-export interface ExtraSlot { key: string; name: string; preset?: PresetState; icon: IconState }
+/** An added slot's halation (the fixed CineStill 800T look): on, and which level the preview shows (0 = off). */
+export interface HalationState { on: boolean; preview: 0 | 1 | 2 }
+export interface ExtraSlot { key: string; name: string; preset?: PresetState; icon: IconState; halation?: HalationState }
 /** A factory Cinema slot (`CY`, `CG`) or the key of an added slot. */
 export type SlotKey = SlotId | string;
 export interface WallItem {
@@ -134,7 +136,7 @@ async function saveProject(): Promise<void> {
       names: s.slots[id].names,
       icon: { mode: s.slots[id].icon.mode, text: s.slots[id].icon.text, style: s.slots[id].icon.style, image: s.slots[id].icon.image },
     }])),
-    extras: s.extras.map((x) => ({ key: x.key, name: x.name, preset: x.preset ? { fileName: x.preset.fileName, kind: x.preset.kind } : null, icon: { mode: x.icon.mode, text: x.icon.text, style: x.icon.style, image: x.icon.image } })),
+    extras: s.extras.map((x) => ({ key: x.key, name: x.name, preset: x.preset ? { fileName: x.preset.fileName, kind: x.preset.kind } : null, icon: { mode: x.icon.mode, text: x.icon.text, style: x.icon.style, image: x.icon.image }, ...(x.halation ? { halation: x.halation } : {}) })),
     wall: s.wall.map((w) => ({ id: w.id, name: w.name, kind: w.kind, width: w.width, height: w.height, crop: w.crop })),
     ratios: s.ratios.map((r) => ({ id: r.id, ratio: r.ratio, name: r.name })),
     soft: s.soft, dateStamp: s.dateStamp, monoUnlock: s.monoUnlock,
@@ -162,7 +164,7 @@ export async function init(): Promise<void> {
       }
       const extras: ExtraSlot[] = (Array.isArray(doc.extras) ? doc.extras : []).slice(0, MAX_EXTRA_SLOTS)
         .filter((x: ExtraSlot) => x && typeof x.key === 'string' && /^x-[a-z0-9]{1,12}$/.test(x.key))
-        .map((x: ExtraSlot) => ({ key: x.key, name: String(x.name || '').slice(0, 40), icon: { mode: x.icon?.mode === 'image' ? 'image' : 'text', text: String(x.icon?.text ?? ''), style: x.icon?.style === 'plain' ? 'plain' : 'film', image: x.icon?.image } }));
+        .map((x: ExtraSlot) => ({ key: x.key, name: String(x.name || '').slice(0, 40), icon: { mode: x.icon?.mode === 'image' ? 'image' : 'text', text: String(x.icon?.text ?? ''), style: x.icon?.style === 'plain' ? 'plain' : 'film', image: x.icon?.image }, ...(validHalation(x.halation) ? { halation: validHalation(x.halation)! } : {}) }));
       const ratios: RatioItem[] = (Array.isArray(doc.ratios) ? doc.ratios : []).slice(0, MAX_CUSTOM_RATIOS)
         .filter((r: RatioItem) => r && typeof r.id === 'string' && typeof r.ratio === 'string')
         .map((r: RatioItem) => ({ id: r.id, ratio: r.ratio.slice(0, 24), name: String(r.name || '').slice(0, 80) }));
@@ -354,8 +356,29 @@ export function extraSpecs(s: State = state): ExtraSlotSpec[] {
   if (s.model === 'MONO') return [];
   return s.extras.map((x) => {
     const r = x.preset!.result!;
-    return { name: extraName(x, s), matrixQ13: r.matrixQ13, curves: r.curves, ...(r.postQ9 ? { postQ9: r.postQ9 } : {}), icon: x.icon.pixels! };
+    return { name: extraName(x, s), matrixQ13: r.matrixQ13, curves: r.curves, ...(r.postQ9 ? { postQ9: r.postQ9 } : {}), icon: x.icon.pixels!, ...(x.halation?.on ? { halation: true } : {}) };
   });
+}
+
+// ------------------------------------------------------------------ halation of an added slot
+/** A halation read from a saved project (older ones also kept the settings, now fixed), or null. */
+function validHalation(v: unknown): HalationState | null {
+  if (!v || typeof v !== 'object') return null;
+  const h = v as Partial<HalationState>;
+  return { on: h.on === true, preview: h.preview === 1 || h.preview === 2 ? h.preview : 0 };
+}
+export function halationOf(x: ExtraSlot): HalationState {
+  return x.halation ?? { on: false, preview: 2 };
+}
+/** Change an added slot's halation (switching it on shows the strong level in the preview). */
+export function setHalation(key: string, patch: Partial<HalationState>): void {
+  set((s) => ({ extras: s.extras.map((x) => {
+    if (x.key !== key) return x;
+    const next = { ...halationOf(x), ...patch };
+    if (patch.on === true && !x.halation?.on) next.preview = 2;
+    return { ...x, halation: next };
+  }) }));
+  scheduleSave();
 }
 export function addExtraSlot(): void {
   if (state.extras.length >= MAX_EXTRA_SLOTS) { toast(t('extraMax', { n: MAX_EXTRA_SLOTS }), 'info'); return; }
@@ -804,7 +827,7 @@ export async function outputFirmware(dest: Dest, stock = false): Promise<void> {
     if (soft) lines.push(t('softAdjLine'));
     if (dateStamp) lines.push(t('dateLine'));
     if (monoUnlock) lines.push(t('monoLine'));
-    if (extras.length) lines.push(t('extraLine', { n: extras.length, l: extras.map((x) => x.name).join(' / ') }));
+    if (extras.length) lines.push(t('extraLine', { n: extras.length, l: extras.map((x) => (x.halation ? `${x.name} (${t('halation')})` : x.name)).join(' / ') }));
     if (!(await ask(t('confirmTitle'), lines, t('confirmOk')))) return;
   }
   const target = await destination(dest);

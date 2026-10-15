@@ -12,13 +12,17 @@ export interface FirmwareRelease { model: string; name: string; applies: string;
 /** What GET /api/update/check reports. */
 export interface UpdateInfo {
   current: string; latest?: string; available: boolean; date?: string; notes?: Record<string, string>; page?: string; size: number;
-  /** false: this copy cannot replace itself; `reason` says why (no-package, translocated, read-only, unsupported). */
+  /** false: this copy cannot replace itself; `reason` says why (no-package, translocated, read-only, unsupported, manual). */
   canInstall: boolean; reason?: string;
   /** Set once, in the first run after an update: the version it replaced. */
   updatedFrom?: string;
   /** The latest version has already been downloaded and checked. */
   ready: boolean;
 }
+
+/** One published release of GR Mod and its text (Markdown), from GET /api/update/notes. */
+export interface ReleaseNote { version: string; name?: string; date?: string; body: string; page?: string }
+export interface UpdateState { current: string; updatedFrom?: string }
 
 export class HostError extends Error {
   code: string;
@@ -108,6 +112,12 @@ export const host = {
   /** Replaces the program and restarts it; the window closes shortly after this returns. */
   async updateInstall(): Promise<void> { await call('POST', '/api/update/install', '{}'); },
   async updatePage(): Promise<void> { try { await post('/api/update/page', {}); } catch { /* no browser */ } },
+  /** The running version, and the one it replaced in the first run after an update. Nothing is fetched. */
+  async updateState(): Promise<UpdateState> { return (await call('GET', '/api/update/state')).json(); },
+  /** The published releases with their text, newest first. */
+  async updateNotes(): Promise<UpdateState & { releases: ReleaseNote[] }> { return (await call('GET', '/api/update/notes')).json(); },
+  /** Show a release's page in the browser. */
+  async releasePage(version: string): Promise<void> { try { await post('/api/update/page', { version }); } catch { /* no browser */ } },
   /** A file the user may keep next to the program (e.g. `preview.jpg`); null when there is none. */
   async sidecar(name: string): Promise<Uint8Array | null> {
     try { return new Uint8Array(await (await call('GET', '/api/sidecar/' + name)).arrayBuffer()); }

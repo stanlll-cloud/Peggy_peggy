@@ -1,16 +1,17 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-10-14",
+  "checked_at": "2026-10-15",
   "upstream_repository": "Maxwooow/Ricoh-GRMod",
   "published_upstream_commit": "0d5c4494df6967e434eb73743814bbbb3bb1117d",
   "published_version": "0.7.0-en.3",
-  "candidate_upstream_commit": "60384f8bbc2851b101f667bbcae832ab184959c3",
-  "candidate_version": "0.7.1-en.4",
+  "candidate_upstream_commit": "675ba64f8cf30811a8d4d4a6899f6fbeb445f490",
+  "candidate_version": "0.7.3-en.4",
+  "latest_upstream_release": "v0.7.3",
   "status": "draft-not-released",
   "branch": "sync/upstream-60384f8",
   "blockers": [
     "Upstream updater installs upstream packages and would remove fork customizations. Fork-specific signed update publishing is not configured.",
     "Complete firmware tests require private official.bin; no Mac/camera verification performed.",
-    "Cross-built candidate is unsigned; must sign before distributing."
+    "Mac launch and Apple codesign verification are still required before distribution."
   ]
 }

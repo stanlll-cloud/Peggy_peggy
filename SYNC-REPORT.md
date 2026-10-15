@@ -1,4 +1,20 @@
-# Upstream sync candidate — 2026-10-14
+# Upstream sync candidate — 2026-10-15
+
+## Latest draft update: upstream 0.7.3
+
+Candidate `675ba64f8cf30811a8d4d4a6899f6fbeb445f490`, latest published upstream release v0.7.3. Seven additional commits since yesterday's candidate, ten since the published baseline. Reused PR #1 rather than opening a duplicate.
+
+- Added-slot halation, matched to CineStill 800T, with per-slot thresholds based on the look's highlight brightness.
+- More room for added looks in RAW Image Control; writing added slots alone works.
+- Release-note history, version tour step and manual-update fallback.
+- Added all 18 new dictionary keys in English and Traditional Chinese. Coverage and placeholder parity passed for 344 keys.
+- Frontend TypeScript and production build passed. Core: 118 passed, 110 skipped, the same missing-private-official.bin collection failure. All seven tested Go packages passed with the expected upstream placeholder.
+- All 190 tracked upstream core/shell/tools files except branding-only shell/build.sh match upstream exactly. host.ts, store.ts, updates.tsx, markdown.tsx and tour.tsx also match. app.tsx and pages.tsx match after removing only documented language-switch, display-format and store-banner changes, so upstream bindings and new halation logic are retained.
+- Rebuilt the Mac candidate with the official rcodesign 0.29.0 tool and completed ad-hoc signing for the Intel/Apple silicon universal bundle. A first build failed VCS stamping inside the detached worktree; rerunning with GOFLAGS=-buildvcs=false succeeded without changing functionality. Candidate ZIP size: 9,325,195 bytes; SHA-256: 86aa4e034093b63e118a192fc6f1b064c34dae8b38b81c128fd6c5c14a74ad4a. No new binary has been published. Ad-hoc is not Developer ID signing or notarization. Apple codesign verification, Mac launch and camera/firmware checks remain pending.
+
+The signed-update source and key still belong to the original author; the new manual fallback also opens the original author's download page. A release would risk replacing this fork with the upstream app. Fork-specific signing-key custody and release publishing remain unresolved, and no safety checks or update features were disabled. Main and the 0.7.0-en.3 public download remain unchanged.
+
+## Historical checks: 2026-10-14 candidate
 
 **Draft only. The published 0.7.0-en.3 download remains unchanged.**
 

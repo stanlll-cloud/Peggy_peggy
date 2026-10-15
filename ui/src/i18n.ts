@@ -103,6 +103,10 @@ const en = {
   extraSlot: 'Custom Preset {n}', extraNameLong: '12 characters max', extraNameBad: 'Letters, numbers, and symbols only', extraNeedsPreset: 'Import a preset', extraNeedsIcon: 'Choose an icon',
   extraMax: 'Up to {n} added slots', extraIncomplete: 'Complete the preset, name, and icon for each custom slot', extraLine: 'Custom Image Control slots {n}  ·  {l}', extraRemove: 'Remove this slot',
   tIcSoftT: 'Additions', tIcSoftB: 'Soft focus: adds "Soft Focus" to the ADJ lever, with off, low, medium and high. The effect cannot be seen in live view; it can be used together with the HDF filter.\nDate imprint: prints the date in the bottom right corner of the photo. Off after flashing; turn it on under Shooting Assist › Date Imprint, two styles.\nB&W Looks: unlocks the 6 black-and-white looks of the GR IV Monochrome.',
+  wnTitle: 'What’s new', wnUpdated: 'Updated to v{v}', wnFrom: '(from v{v})', wnLoading: 'Getting the release notes…', wnError: 'Cannot get the release notes', wnNone: 'No notes for this version', wnGitHub: 'View on GitHub', wnCurrent: 'current',
+  updReasonManual: 'This release cannot be installed from inside Ricoh GR Customizer; please download it from the download page.',
+  tOvVersionT: 'Version details', tOvVersionB: 'See what changed in this version and in earlier ones.',
+  halation: 'Halation', haloLabel: 'Halo', halationSub: 'When on, adds the red halation of film without a remjet layer around the highlights', haloPreview: 'Preview', haloOff: 'Off', haloWeak: 'Weak', haloStrong: 'Strong',
 };
 export type Key = keyof typeof en;
 const zhTW: Record<Key, string> = {
@@ -209,6 +213,10 @@ const zhTW: Record<Key, string> = {
   extraSlot: '新增欄位 {n}', extraNameLong: '最多 12 個字元', extraNameBad: '僅限英文、數字、符號', extraNeedsPreset: '需要匯入預設', extraNeedsIcon: '需要圖示',
   extraMax: '最多新增 {n} 個欄位', extraIncomplete: '有新增欄位還沒準備好（預設、名稱或圖示）', extraLine: '新增影像控制欄位 {n}  ·  {l}', extraRemove: '刪除這個欄位',
   tIcSoftT: '附加功能', tIcSoftB: '柔焦：開啟後，可將“柔焦”效果增添到 ADJ 快捷選單，有關、弱、中、強四檔，效果無法實時預覽，可與 HDF 濾鏡同時啟用。\n時間戳：在照片右下角列印日期。刷入後預設關閉，在“拍攝輔助 › 拍攝時間戳”裡開啟，可選兩種樣式。\n黑白風格：解鎖 GR IV Monochrome 機型的 6 個黑白風格。',
+  wnTitle: '更新內容', wnUpdated: '已更新至 v{v}', wnFrom: '（從 v{v}）', wnLoading: '正在取得更新內容…', wnError: '無法取得更新內容', wnNone: '此版本沒有更新說明', wnGitHub: '在 GitHub 檢視', wnCurrent: '目前',
+  updReasonManual: '此版本無法在 Ricoh GR Customizer 內直接安裝，請至下載頁手動下載。',
+  tOvVersionT: '版本詳情', tOvVersionB: '在此查看目前版本及歷史版本的更新內容。',
+  halation: '光暈', haloLabel: '光暈', halationSub: '啟用後，在照片高光周圍增添仿無防光暈背層底片的紅色光暈', haloPreview: '預覽', haloOff: '關', haloWeak: '弱', haloStrong: '強',
 };
 
 export type UiLanguage = 'en' | 'zh-TW';

@@ -323,3 +323,85 @@ func TestBundleRejects(t *testing.T) {
 		}
 	}
 }
+
+// A release published without update.json: the newest release's version,
+// from the address releases/latest redirects to, still answers the check.
+func TestLatestWithoutManifest(t *testing.T) {
+	tag := "v0.7.0"
+	var tagHits int
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		switch {
+		case req.URL.Path == "/old/repo/releases/latest":
+			http.Redirect(w, req, "/new/repo/releases/latest", http.StatusMovedPermanently)
+		case req.URL.Path == "/new/repo/releases/latest":
+			http.Redirect(w, req, "/new/repo/releases/tag/"+tag, http.StatusFound)
+		case strings.HasPrefix(req.URL.Path, "/new/repo/releases/tag/"):
+			tagHits++
+			w.Write([]byte("page"))
+		default:
+			http.NotFound(w, req)
+		}
+	}))
+	defer srv.Close()
+	rel := newRelease(t)
+	u := &Updater{Current: "0.7.1", Sources: []string{srv.URL + "/rel/"}, Key: rel.pub, Platform: PlatformWindows, LatestPage: srv.URL + "/old/repo/releases/latest"}
+
+	in, err := u.Check(context.Background())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if in.Available || in.Latest != "0.7.0" || in.Current != "0.7.1" {
+		t.Fatalf("older release offered: %+v", in)
+	}
+	u.Current = "0.7.0"
+	if in, err = u.Check(context.Background()); err != nil || in.Available {
+		t.Fatalf("same release: %+v %v", in, err)
+	}
+	tag = "v0.8.0"
+	in, err = u.Check(context.Background())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !in.Available || in.Latest != "0.8.0" || in.CanInstall || in.Reason != ReasonManual {
+		t.Fatalf("newer release without manifest: %+v", in)
+	}
+	if err := u.Download(context.Background(), in, nil); err == nil {
+		t.Fatal("a release without manifest was downloaded")
+	}
+	if tagHits != 0 {
+		t.Fatal("the release page itself was fetched")
+	}
+
+	// Not a release address: the check fails as before.
+	u.LatestPage = srv.URL + "/nothing"
+	if _, err := u.Check(context.Background()); err == nil {
+		t.Fatal("no error without manifest or release")
+	}
+	tag = "latest-build"
+	u.LatestPage = srv.URL + "/new/repo/releases/latest"
+	if _, err := u.Check(context.Background()); err == nil {
+		t.Fatal("unusable tag accepted")
+	}
+}
+
+func TestFetchReleases(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		w.Write([]byte(`[
+		 {"tag_name":"v0.7.1","name":"0.7.1","body":"## Fixes\r\n- a","html_url":"https://github.com/x/y/releases/tag/v0.7.1","published_at":"2026-10-14T05:16:58Z"},
+		 {"tag_name":"v0.8.0-beta","body":"beta","prerelease":true},
+		 {"tag_name":"v0.7.2","body":"new","html_url":"http://insecure","published_at":"2026-10-15T01:00:00Z"},
+		 {"tag_name":"nightly","body":"x"},
+		 {"tag_name":"v0.6.1","body":"old","draft":true}]`))
+	}))
+	defer srv.Close()
+	list, err := FetchReleases(context.Background(), nil, srv.URL, "GRMod/test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(list) != 2 || list[0].Version != "0.7.2" || list[1].Version != "0.7.1" {
+		t.Fatalf("releases %+v", list)
+	}
+	if list[1].Body != "## Fixes\n- a" || list[1].Date != "2026-10-14" || list[1].Page == "" || list[0].Page != "" {
+		t.Fatalf("release %+v / %+v", list[1], list[0])
+	}
+}

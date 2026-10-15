@@ -9,7 +9,7 @@ import { CopiesPage } from './copies';
 import { BridgeBanner, BridgeDialog, FirmwareOnline, FirmwareRow, MODELS, modelLabel } from './firmware';
 import { CropEditor, ImageControlPage, RatioPage, WallpaperPage } from './pages';
 import { Tour, replayTour, restartTours } from './tour';
-import { UpdatePill, UpdateWatcher, checkForUpdate } from './updates';
+import { UpdatePill, UpdateWatcher, checkForUpdate, openWhatsNew } from './updates';
 import {
   askForOfficial, bridgeLoaded, backupCopies, extrasOn, canRestoreWall, copyList, deleteCopies, hasNameErrors, hasRatioErrors, ratioSpecs, revealBackups, writableCopy, writeCopy, outputFirmware, outputWallpaper, pendingChanges, refreshVolumes, restoreCardWall, selectVolume, setLang, setModel, setPage, setShowAll, useStore, wallReady,
 } from './store';
@@ -21,7 +21,6 @@ function Sidebar() {
   const page = useStore((s) => s.page);
   const model = useStore((s) => s.model);
   const lang = useStore((s) => s.lang);
-  const [about, setAbout] = useState(false);
   return (
     <aside className="sidebar">
       <nav>
@@ -44,21 +43,11 @@ function Sidebar() {
       </div>
       <div className="side-foot">
         <button className="about-link" aria-label="Switch interface language / 切換介面語言" onClick={() => setUiLanguage(uiLanguage === 'zh-TW' ? 'en' : 'zh-TW')}>{uiLanguage === 'zh-TW' ? 'English' : '繁體中文'}</button>
-        <button className="about-link" onClick={() => setAbout(true)}>v{host.info?.version || ''}</button>
+        <button className="about-link" data-tour="version" title={t('wnTitle')} onClick={() => openWhatsNew()}>v{host.info?.version || ''}</button>
         <UpdatePill />
         <span className="grow" />
         <HelpMenu />
       </div>
-      {about && (
-        <div className="overlay" onMouseDown={(e) => { if (e.target === e.currentTarget) setAbout(false); }}>
-          <div className="dialog about" role="dialog" aria-modal="true">
-            <h3>Ricoh GR Customizer <small>v{host.info?.version}</small></h3>
-            <p>{t('aboutBody')}</p>
-            <p className="muted small">{t('aboutCredits')}</p>
-            <div className="dialog-actions"><button className="btn" onClick={() => setAbout(false)}>{t('done')}</button></div>
-          </div>
-        </div>
-      )}
     </aside>
   );
 }
@@ -87,7 +76,7 @@ function OutputBar() {
   const vol = s.volumes.find((v) => v.id === s.volumeId);
   // Image Control (with its switches) and the added ratios go into one firmware file: both pages write the same thing.
   const isIC = s.page === 'ic' || s.page === 'ratio'; const isWall = s.page === 'wall';
-  const can = !!s.info && !s.busy && (isIC ? (pendingChanges(s).length + ratioSpecs(s).length > 0 || extrasOn(s)) && !hasNameErrors(s) && !hasRatioErrors(s) : isWall && wallReady(s));
+  const can = !!s.info && !s.busy && (isIC ? (pendingChanges(s).length + ratioSpecs(s).length > 0 || extrasOn(s) || (s.model !== 'MONO' && s.extras.length > 0)) && !hasNameErrors(s) && !hasRatioErrors(s) : isWall && wallReady(s));
   const role: Key | '' = s.role === 'firmware' ? 'roleFirmware' : s.role === 'wallpaper' ? 'roleWallpaper' : s.role === 'mixed' ? 'roleMixed' : s.role === 'empty' ? 'roleEmpty' : '';
   // With the bridge firmware open the buttons stay live but offer the official download instead.
   const bridge = bridgeLoaded(s) && !s.busy;
