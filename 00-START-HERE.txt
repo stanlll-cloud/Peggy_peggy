@@ -1,6 +1,8 @@
 RICOH GR CUSTOMIZER - START HERE
 
-Currently tested models: Ricoh GR IV and Ricoh GR IV HDF.
+Version: 0.7.3-en.4, based on upstream 0.7.3.
+Previously tested models: Ricoh GR IV and Ricoh GR IV HDF (owner-reported earlier edition).
+This update has not been tested on a physical Mac or camera.
 
 1. Open 01-USER-GUIDE-English.pdf first.
    It contains installation steps, camera settings, FAQs, and Firmware vs. Script instructions.
@@ -12,6 +14,13 @@ Currently tested models: Ricoh GR IV and Ricoh GR IV HDF.
    Switch languages at the bottom of the sidebar.
 
 More color recipes: https://luts-maker.uk
+
+Halation: import a preset into an added slot, enable Halo, then compare Off / Weak / Strong in the preview.
+Write the new firmware to the card and install it in the camera for the new effect to apply.
+Camera and app preview use the upstream per-preset highlight threshold.
+
+Get community updates from https://github.com/stanlll-cloud/Peggy_peggy
+Download the new ZIP and replace the app manually. In-app signed installation is not configured.
 
 This is a community beta. Read the guide before writing firmware to a card.
 Complete corresponding source and license notices are included in this package.

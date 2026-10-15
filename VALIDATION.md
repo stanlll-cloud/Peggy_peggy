@@ -1,4 +1,15 @@
-# Validation — Ricoh GR Customizer 0.7.0-en.3
+# Validation — Ricoh GR Customizer 0.7.3-en.4
+
+## Current update
+
+- Upstream 0.7.3 core code, camera defaults and safety checks are unchanged. Repository-specific update addresses replace the original author's addresses; no signature checks were removed. Signed in-app installation is not provisioned, and community updates are manual downloads.
+- UI TypeScript and production build passed. Translation coverage and placeholders passed for 344 English/Traditional Chinese keys.
+- Core: 118 passed, 110 skipped, one collection failure due to missing private official.bin in bridge.test.ts. No dummy fixture or test-source change was used.
+- All seven tested Go packages passed against the upstream placeholder expected by the test. Mac universal cross-build and ad-hoc signing completed with both x86_64 and arm64 slices.
+- The PDF includes a third page for 0.7.3 halation, manual updates and validation limits. Links and package contents were checked.
+- This version has not been launched on a physical Mac, written to a camera card or flashed to a camera. Apple codesign validation is pending; ad-hoc signing is not notarization.
+
+## Historical edition 3 checks
 
 - UI TypeScript checks and Vite production build: passed.
 - Desktop Go tests: all six tested packages passed; two tools have no tests.

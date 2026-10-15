@@ -22,7 +22,7 @@ const (
 	updateDownloadTimeout = 30 * time.Minute
 	// DefaultReleasePage is shown when an update cannot be installed by the
 	// program itself.
-	DefaultReleasePage = "https://github.com/Maxwooow/Ricoh-GRMod/releases/latest"
+	DefaultReleasePage = "https://github.com/stanlll-cloud/Peggy_peggy/releases/latest"
 )
 
 type updateState struct {
@@ -213,7 +213,7 @@ func (s *Server) handleUpdatePage(w http.ResponseWriter, r *http.Request) error 
 }
 
 // ReleasePagePrefix + "v1.2.3" is a release's page.
-const ReleasePagePrefix = "https://github.com/Maxwooow/Ricoh-GRMod/releases/tag/"
+const ReleasePagePrefix = "https://github.com/stanlll-cloud/Peggy_peggy/releases/tag/"
 
 var releaseTag = regexp.MustCompile(`^[0-9]{1,5}(\.[0-9]{1,5}){0,3}$`)
 

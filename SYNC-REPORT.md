@@ -1,4 +1,12 @@
-# Upstream sync candidate — 2026-10-15
+# Upstream sync and community release — 2026-10-15
+
+## Publication after the owner's explicit request
+
+The owner requested publishing the synchronized version. The community beta is 0.7.3-en.4, based on upstream 675ba64. Update-source, release-note API, manual-download page and allowed release-page prefix now point to stanlll-cloud/Peggy_peggy. These are repository identity changes in shell/updates.go and shell/internal/server/update.go only. No verification checks, update algorithms, camera behavior or firmware processing were changed. Signed in-app installation is not provisioned; download updates through the README. The private signing key was neither created nor committed.
+
+Parity was checked with these two repository-address files and branding-only shell/build.sh excluded from exact comparison. All camera/core code and remaining shell/tools match upstream. UI handler parity and language checks were retained. The old 0.7.0-en.3 package is retained. The new total package includes the rebuilt ad-hoc signed universal app, corresponding source, license, start-here instructions and the three-page English PDF. Mac/camera test limitations are explicit in the README and release notes.
+
+The historical sections below describe the prior draft and its blockers before the owner requested publication; SYNC-STATUS.json is the current state.
 
 ## Latest draft update: upstream 0.7.3
 

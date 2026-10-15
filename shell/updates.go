@@ -20,11 +20,11 @@ const updatePublicKey = "SmDyXQIIsZYfZ06bPIdeuzDMvpT4FbELxGu9BuCVx+I="
 
 // updateSources are where releases are looked for, in order.
 var updateSources = []string{
-	"https://github.com/Maxwooow/Ricoh-GRMod/releases/latest/download/",
+	"https://github.com/stanlll-cloud/Peggy_peggy/releases/latest/download/",
 }
 
 // releaseNotesAPI lists the published releases with their text (what's new).
-const releaseNotesAPI = "https://api.github.com/repos/Maxwooow/Ricoh-GRMod/releases?per_page=30"
+const releaseNotesAPI = "https://api.github.com/repos/stanlll-cloud/Peggy_peggy/releases?per_page=30"
 
 // envReleaseNotes replaces releaseNotesAPI together with envUpdateSource (testing).
 const envReleaseNotes = "GRMOD_RELEASE_NOTES"
