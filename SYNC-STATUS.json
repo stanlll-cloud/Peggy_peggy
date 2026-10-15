@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-15",
+  "upstream_repository": "Maxwooow/Ricoh-GRMod",
+  "published_upstream_commit": "675ba64f8cf30811a8d4d4a6899f6fbeb445f490",
+  "published_version": "0.7.3-en.4",
+  "candidate_upstream_commit": "675ba64f8cf30811a8d4d4a6899f6fbeb445f490",
+  "candidate_version": "0.7.3-en.4",
+  "latest_upstream_release": "v0.7.3",
+  "status": "published-community-beta",
+  "branch": "main",
+  "limitations": [
+    "Update destinations point to this fork. Updates are distributed through the README download link; signed in-app installation is not provisioned. Verification checks are unchanged.",
+    "Complete firmware tests require private official.bin; no Mac/camera verification performed.",
+    "Ad-hoc signed. Physical Mac launch, Apple codesign verification and camera flashing have not been performed for this update."
+  ]
+}

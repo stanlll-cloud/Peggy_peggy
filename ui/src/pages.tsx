@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { color, EXTRA_NAME_MAX, MAX_CUSTOM_RATIOS, MAX_EXTRA_SLOTS, SHUTDOWN_H, SHUTDOWN_W } from '@grmod/core';
+import { color, EXTRA_NAME_MAX, halateRgba, halationLight, MAX_CUSTOM_RATIOS, MAX_EXTRA_SLOTS, SHUTDOWN_H, SHUTDOWN_W } from '@grmod/core';
 import type { SlotId } from '@grmod/core';
 import type { ReactNode } from 'react';
 import { DropZone, FileButton, Ico, IconCanvas, Menu, Prop, RatioIcon, RgbCanvas, Segmented, Switch } from './components';
@@ -15,7 +15,7 @@ import {
   setSoft,
   setDateStamp,
   setMonoUnlock,
-  extraName, extraNameProblem, extraProblem, removeExtraSlot, setExtraCount, setExtraName, slotOf,
+  extraName, extraNameProblem, extraProblem, halationOf, removeExtraSlot, setExtraCount, setExtraName, setHalation, slotOf,
 } from './store';
 import type { ExtraSlot, RatioItem, WallItem } from './store';
 
@@ -48,7 +48,18 @@ function Swatches({ params }: { params?: color.SlotParams }) {
 /** The sample photograph with the original on the left of a draggable divider and the preset on the right. */
 function PhotoCompare({ params }: { params?: color.SlotParams }) {
   const photo = usePhoto();
-  const after = useMemo(() => (photo && params ? applySlot(params, photo) : null), [photo, params]);
+  const halo = useStore((s) => { const x = s.extras.find((e) => e.key === s.activeSlot); return x?.halation?.on && x.halation.preview ? x.halation : undefined; });
+  // where the slot's light starts: its own look decides how bright the highlights end up
+  const result = useStore((s) => s.extras.find((e) => e.key === s.activeSlot)?.preset?.result);
+  const light = useMemo(() => (result ? halationLight(result.curves, result.postQ9) : undefined), [result]);
+  const base = useMemo(() => (photo && params ? applySlot(params, photo) : null), [photo, params]);
+  // The added slot's halation at the level chosen for the preview, as the camera computes it.
+  const after = useMemo(() => {
+    if (!base || !halo) return base;
+    const out = new ImageData(new Uint8ClampedArray(base.data), base.width, base.height);
+    halateRgba(out.data, out.width, out.height, halo.preview as 1 | 2, light);
+    return out;
+  }, [base, halo, light]);
   return <Compare photo={photo} after={after} label={t('preset')} />;
 }
 
@@ -278,10 +289,37 @@ function ExtraSlotCard({ x, index }: { x: ExtraSlot; index: number }) {
               {x.icon.mode === 'image' && <FileButton className="btn small" accept="image/*" onFiles={(f) => { void loadIconImage(k, f[0]); }}>{t('chooseImage')}</FileButton>}
             </div>
           </Prop>
+          <HalationProp x={x} />
           {problem && !p?.busy && !p?.error && !nameBad && <div className="chips extra-problem"><span className="chip warn"><span className="ellipsis">{problem}</span></span></div>}
         </div>
       </div>
     </DropZone>
+  );
+}
+
+/**
+ * An added slot's halation: on / off and the level the preview shows. The look is fixed (fitted
+ * to CineStill 800T); in the camera the level is chosen on the slot's parameter screen
+ * ("Halation": Off / Weak / Strong).
+ */
+function HalationProp({ x }: { x: ExtraSlot }) {
+  const h = halationOf(x);
+  const k = x.key;
+  return (
+    <Prop label={t('haloLabel')}>
+      <div className="halo">
+        <div className="chips">
+          <Switch checked={h.on} onChange={(on) => setHalation(k, { on })} label={t('halation')} />
+          {h.on && (
+            <>
+              <span className="muted small">{t('haloPreview')}</span>
+              <Segmented value={String(h.preview)} onChange={(v) => setHalation(k, { preview: Number(v) as 0 | 1 | 2 })} options={[{ value: '0', label: t('haloOff') }, { value: '1', label: t('haloWeak') }, { value: '2', label: t('haloStrong') }]} />
+            </>
+          )}
+        </div>
+        <span className="muted small halo-note">{t('halationSub')}</span>
+      </div>
+    </Prop>
   );
 }
 

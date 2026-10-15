@@ -34,6 +34,7 @@ import { assembleWords, branchTarget, branchWord, movImmediate, movWord } from '
 import { BASE, ICON_CATALOG, LOOKUP_BOUNDS, OFFICIAL_RTOS_LENGTH, Patch, TEXT_CATALOG, concat, expectWord, u16le, u32le, utf16z } from './build';
 import { linkModule } from './native-link';
 import { SLOT_PARAMETERS, SLOT_PARAMS_MODULE } from './slotparams-native';
+import { HALATION_NAMES, halationIcon, halationLight, halationScale, installHalationModule, readHalation } from './halation';
 import { FirmwareError } from '../types';
 
 export const MAX_EXTRA_SLOTS = 6;
@@ -58,7 +59,22 @@ export interface ExtraSlotSpec {
   postQ9?: ArrayLike<number>;
   /** 40x40 RGBA. Fully transparent pixels stay transparent, others are made opaque. */
   icon: Uint8Array;
+  /** Halation (CineStill 800T, fixed look) for the slot's "Halation" levels Off / Weak / Strong (the slider of Cinema's Toning); absent or false = none. */
+  halation?: boolean;
 }
+
+/** Text of the parameter name "Halation", icon of its list entry and of its slider scale. */
+export const HALATION_TEXT_ID = 852;
+export const HALATION_ICON_ID = 780;
+export const HALATION_SCALE_ICON_ID = 781;
+/** Text of Cinema's Toning (and of the black-and-white toning, which no added look has). */
+const TONING_TEXT = 339;
+/** Toning's list icon. */
+const TONING_ICON = 0x16f;
+/** The native three-position scale whose panel and track the halation scale reuses. */
+const NATIVE_SCALE_ICON = 0x23b;
+/** The word the development step leaves for the halation module: style | level << 8 | valid. */
+const HALATION_STASH = 0x558372e4;
 
 const TONES = 34;
 const VARIANTS = 3;
@@ -252,6 +268,7 @@ export function installExtraSlots(p: Patch, iconbin: Uint8Array, slots: readonly
     if (!s.curves || s.curves.length !== 3) fail('bad-color', `added slot ${k + 1}: curves must be [R, G, B]`);
     const cBytes = s.curves.map((c) => curveBytes(k, c));
     if (s.postQ9 !== undefined) checkPost(k, s.postQ9);
+    if (s.halation !== undefined && typeof s.halation !== 'boolean') fail('bad-halation', `added slot ${k + 1}: halation is on or off`);
     const icon = iconBytes(k, s.icon);
 
     const matrix = p.append(mBytes, 4);
@@ -316,8 +333,13 @@ export function installExtraSlots(p: Patch, iconbin: Uint8Array, slots: readonly
   // invalid values (31..33 among them) stays as it is.
   hook(p, 0x53912cf4, 0xe352001e, `sub r1,r2,#${EXTRA_FIRST_STYLE};cmp r1,#${count - 1};bhi native;mov r3,r2;b #0x53912d08;native:cmp r2,#30;b #0x53912cf8`, 'added slots: style to table index');
   // The common input fields (grain among them) are read as for Cinema Yellow; only the local
-  // dispatch register changes, the frame's style and the table index stay the new ones.
-  hook(p, 0x539113f8, 0xe5d3279c, `ldrb r2,[r3,#0x79c];sub ip,r2,#${EXTRA_FIRST_STYLE};cmp ip,#${count - 1};movls r2,#${CY};b #0x539113fc`, 'added slots: Cinema input fields');
+  // dispatch register changes, the frame's style and the table index stay the new ones. With
+  // halation, the frame's style and Toning (halation) level are also left for the JPEG step.
+  const halation = slots.some((s) => s.halation === true);
+  const stash = halation
+    ? `push {r0,r1};ldrb r0,[r3,#0x79c];ldrb r1,[r3,#0x7a6];orr r0,r0,r1,lsl #8;orr r0,r0,#0x10000;movw r1,#${HALATION_STASH & 65535};movt r1,#${HALATION_STASH >>> 16};str r0,[r1];pop {r0,r1};`
+    : '';
+  hook(p, 0x539113f8, 0xe5d3279c, `${stash}ldrb r2,[r3,#0x79c];sub ip,r2,#${EXTRA_FIRST_STYLE};cmp ip,#${count - 1};movls r2,#${CY};b #0x539113fc`, 'added slots: Cinema input fields');
 
   // Menu order and counts.
   const order = p.append(concat([p.read(ORDER_TABLE, ORDER_COUNT), Uint8Array.from(slots.map((_, i) => EXTRA_FIRST_STYLE + i))]), 4);
@@ -350,10 +372,37 @@ export function installExtraSlots(p: Patch, iconbin: Uint8Array, slots: readonly
   }
   hook(p, 0x53373bc0, 0xe241100b, `sub ip,r1,#${EXTRA_FIRST_STYLE};cmp ip,#${count - 1};bhi native;add r0,ip,#21;bx lr;native:sub r1,r1,#11;b #0x53373bc4`, 'added slots: RAW development look');
 
-  installOwnParameters(p, count);
+  const module = installOwnParameters(p, count);
   installPreviewMapping(p, count);
   installChangeFunctors(p, count);
   installLookChecks(p, count);
+  installRawDevelopment(p, count, module);
+  installPictureInfo(p, count);
+  if (halation) {
+    // Name, list icon and slider scale of the parameter for the added looks.
+    for (let l = 0; l < 21; l++) {
+      const row = p.word(TEXT_CATALOG + l * 4);
+      expectWord(p, row + HALATION_TEXT_ID * 4, 0);
+      const name = HALATION_NAMES[l];
+      const text = p.append(utf16z(name), 4);
+      p.write(row + HALATION_TEXT_ID * 4, u32le([p.append(concat([Uint8Array.from([name.length + 1, 1, 0, 0]), u32le([text])]), 4)]));
+    }
+    for (const site of p.textBoundSites) p.setWord(site, movWord(3, Math.max(HALATION_TEXT_ID, movImmediate(p.word(site)))), 'text upper bound');
+    const nativeScale = wordOf(p.readMapped(ICON_CATALOG + NATIVE_SCALE_ICON * 4, 4));
+    const scaleAt = wordOf(p.readMapped(nativeScale + 8, 4)) * 4;
+    const native = iconbin.slice(scaleAt, scaleAt + 400 * 60 * 4);
+    for (const [id, w, h, pixels] of [[HALATION_ICON_ID, 40, 40, halationIcon()], [HALATION_SCALE_ICON_ID, 400, 60, halationScale(native)]] as const) {
+      const pad = (4 - (iconLength % 4)) % 4;
+      if (pad) { parts.push(new Uint8Array(pad)); iconLength += pad; }
+      expectWord(p, ICON_CATALOG + id * 4, 0);
+      p.setWord(ICON_CATALOG + id * 4, p.append(concat([u16le([1, w, h, 0]), u32le([iconLength / 4])]), 16), 'halation icon');
+      parts.push(pixels);
+      iconLength += pixels.length;
+    }
+    for (const [site, r] of LOOKUP_BOUNDS) p.setWord(site, movWord(r, Math.max(HALATION_SCALE_ICON_ID, movImmediate(p.word(site)))), 'icon upper bound');
+    installHalationScreens(p, count);
+    installHalationModule(p, slots.map((s) => s.halation === true), EXTRA_FIRST_STYLE, HALATION_STASH, slots.map((s) => halationLight(s.curves, s.postQ9)));
+  }
   return concat(parts);
 }
 
@@ -389,7 +438,7 @@ const SLOT_STATE = 0x558372e0;
  * parameters, and two direct readers, still take the added styles as 18. Developed as test
  * firmwares 026..034.
  */
-function installOwnParameters(p: Patch, count: number): void {
+function installOwnParameters(p: Patch, count: number): Record<string, number> {
   const normalize = (at: number, reg: string, original: number, tail: string): void => {
     // The flags are set again by every native entry before use; no callee-saved register, LR or SP changes.
     hook(p, at, original, `sub ip,${reg},#${EXTRA_FIRST_STYLE};cmp ip,#${count - 1};movls ${reg},#${CY};${tail};b #${at + 4}`, 'added slots: parameters of Cinema Yellow');
@@ -430,6 +479,7 @@ function installOwnParameters(p: Patch, count: number): void {
   // The module keeps its state pointer in the 44 bytes between the end of the zero fill and the
   // heap; they are cleared at every start from now on.
   p.setWord(ZERO_FILL_END, 0x55837300, 'start-up zero fill also clears the 44 unused bytes before the heap');
+  return mod.symbols;
 }
 
 /**
@@ -578,6 +628,167 @@ function installPreviewMapping(p: Patch, count: number): void {
   }
 }
 
+// -------------------------------------------------------------- RAW development
+
+/** RAW development's number of Cinema Yellow (its numbering: 0 = as shot, 1..20 the factory looks). */
+const RAW_CY = 9;
+const RAW_FIRST_EXTRA = 21;
+/** The functions of RawDevelopmentModel.cpp that read or write a look's parameters. */
+const RAW_MODEL = [0x5336c000, 0x53373400] as const;
+/** `ldrb r2,[r3,#0x9d]` (the look of the selected custom base), always followed by `cmp r2,#0`. */
+const RAW_LOOK_LOAD = 0xe5d3209d;
+const RAW_LOOK_SITES = 72;
+
+/**
+ * In-camera RAW development keeps its own copy of the parameters: per custom base (4, the photo
+ * sets) and look (0..20) 18 bytes, two bytes of grain, and a table (0x53DBB8F0) of which
+ * parameters each look has. Every function that reads or writes them first turns the look into a
+ * row with a loop over 1..20, so an added look (21, ...) got row 0, whose parameters are all
+ * "absent": the parameter screen showed -4 everywhere and developing stopped the camera (reported
+ * on 0.7.0). The added looks now use Cinema Yellow's row, as the shooting side does with Cinema
+ * Yellow's fields; the look itself (name, icon, the style given to development) stays the added
+ * one. And as there, the row belongs to one owner per base, the others' values are kept by the
+ * slot-parameter module (`sp_raw_*` in slot_params.c): when a RAW file is opened every added look
+ * gets its own saved values; before the model applies a look (every change of look goes through
+ * 0x53374360) the row is handed to it; the parameters a RAW file was shot with go to its look.
+ */
+function installRawDevelopment(p: Patch, count: number, module: Record<string, number>): void {
+  const map = (r: string): string => `sub ${r},${r},#${RAW_FIRST_EXTRA};cmp ${r},#${count};movlo ${r},#${RAW_CY};addhs ${r},${r},#${RAW_FIRST_EXTRA}`;
+  const sites: number[] = [];
+  for (let at = RAW_MODEL[0]; at < RAW_MODEL[1]; at += 4) {
+    if (p.word(at) !== RAW_LOOK_LOAD) continue;
+    // Only the loads that pick a row: the loaded look is compared with r3 by the 1..20 loop.
+    let row = false;
+    for (let k = 1; k < 30 && !row; k++) {
+      if (p.word(at + 4 * k) !== 0xe1520003) continue; // cmp r2,r3
+      for (let j = 1; j < 6; j++) if (p.word(at + 4 * (k + j)) === 0xe3530015) row = true; // cmp r3,#21
+    }
+    if (!row) continue;
+    if (p.word(at + 4) !== 0xe3520000) fail('unexpected-layout', `RAW development: load at 0x${at.toString(16)} is not followed by cmp r2,#0`);
+    sites.push(at);
+  }
+  if (sites.length !== RAW_LOOK_SITES) fail('unexpected-layout', `RAW development: ${sites.length} look loads, expected ${RAW_LOOK_SITES}`);
+  for (const at of sites) {
+    const code = p.append((a) => [RAW_LOOK_LOAD, ...assembleWords(`${map('r2')};b #${at + 4}`, a + 4)], 4);
+    p.setWord(at, branchWord(at, code), 'added slots: RAW development parameters of Cinema Yellow');
+  }
+  // Opening a RAW file: the model has filled every look from the settings (0x53373D04, r4 the model).
+  hook(p, 0x53374e24, 0xe5d42064, `push {r0-r3,ip,lr};mov r0,r4;bl #${module.sp_raw_init};pop {r0-r3,ip,lr};ldrb r2,[r4,#0x64];b #0x53374e28`, 'added slots: own RAW development parameters');
+  // Then it copies the parameters the file was shot with into the row of its look (base 0).
+  hook(p, 0x53374e98, 0xe3500000, `push {r0-r3,ip,lr};mov r2,r0;mov r1,#0;mov r0,r4;bl #${module.sp_raw_own};pop {r0-r3,ip,lr};${map('r0')};cmp r0,#0;b #0x53374e9c`, 'added slots: RAW development parameters as shot');
+  // Applying a look: the row goes to the looks now selected.
+  hook(p, 0x53374360, 0xe1a0c00d, `push {r0-r4,lr};bl #${module.sp_raw_sync};pop {r0-r4,lr};mov ip,sp;b #0x53374364`, 'added slots: own RAW development parameters');
+  // The RAW development screen makes its list as long as the longest of its lists (0x531A13C8):
+  // Image Control at most 24 entries (the factory looks, the three custom sets, "as shot"). With
+  // the added looks the list is longer; the list widget then refuses the count (assertion) and the
+  // camera stops on entering Image Control (0.7.1 with 4 added slots).
+  swap(p, 0x5336b89c, 'mov r0,#24', `mov r0,#${24 + count}`, 'added slots: RAW development list capacity');
+}
+
+// -------------------------------------------------------------- picture information
+
+/**
+ * The picture's look as written in the maker note (Pentax "ImageTone"): 0x100.. and 0x8100..
+ * for the factory looks; the added ones get 0x8110, 0x8111, ... (before, anything unknown was
+ * written as 0x100, Standard).
+ */
+export const EXTRA_TONE_CODE = 0x8110;
+/** Playback's own numbering of the looks (0x53DBDA18: 1..20); the added ones are 21, ... */
+const PLAY_FIRST_EXTRA = 21;
+/** Static init of the "looks that have parameter X" lists the maker note writers consult. */
+const PARAM_LISTS = [0x537e0e94, 0x537e117c] as const;
+const LIST_ASSIGN = 0x537da700;
+const PARAM_LISTS_CALLS = 18;
+const PARAM_LISTS_WITH_CY = 7;
+
+/**
+ * Pictures shot with an added look:
+ *  - the maker note names the look (0x537DE474 looked it up in a list of the factory looks and
+ *    wrote Standard otherwise), and has the parameters of Cinema Yellow (each parameter's writer
+ *    looks the style up in a list of the looks that have it; the added looks join every list
+ *    Cinema Yellow is in);
+ *  - reading it back: the record of a RAW file for development (0x537D5748) and playback's
+ *    information (0x537D899C, then 0x533A3804 to a style) know the new codes, so the playback
+ *    information shows the slot's icon (through the overlay hook) and Cinema Yellow's
+ *    parameters (0x533A75AC picks them by style), and RAW development starts from the look the
+ *    picture was shot with. A code of a slot that is no longer installed reads as Standard, as
+ *    before.
+ */
+function installPictureInfo(p: Patch, count: number): void {
+  const n = count - 1;
+  // Writer: r1 the maker note, r2 the frame record; tail-calls 0x537E7148(note, 0, code).
+  hook(p, 0x537de474, 0xe30f3198, `ldrb ip,[r2,#0x79c];sub ip,ip,#${EXTRA_FIRST_STYLE};cmp ip,#${n};bhi native;mov r0,r1;mov r1,#0;movw r2,#${EXTRA_TONE_CODE};add r2,r2,ip;b #0x537e7148;native:movw r3,#0xf198;b #0x537de478`, 'added slots: maker note look');
+  // Parameter lists: the ones with Cinema Yellow get the added styles appended (new copies).
+  const calls: number[] = [];
+  for (let at = PARAM_LISTS[0]; at < PARAM_LISTS[1]; at += 4) if (p.word(at) === branchWord(at, LIST_ASSIGN, 14, true) || p.word(at) === branchWord(at, LIST_ASSIGN)) calls.push(at);
+  if (calls.length !== PARAM_LISTS_CALLS) fail('unexpected-layout', `maker note parameter lists: ${calls.length} lists, expected ${PARAM_LISTS_CALLS}`);
+  let extended = 0;
+  for (const call of calls) {
+    let lo = 0, hi = 0, add = 0;
+    for (let k = 1; k < 14; k++) {
+      const at = call - 4 * k;
+      const w = p.word(at);
+      if (!lo && ((w & 0xfff0f000) >>> 0) === 0xe3001000) lo = at; // movw r1,#
+      if (!hi && ((w & 0xfff0f000) >>> 0) === 0xe3401000) hi = at; // movt r1,#
+      if (!add && ((w & 0xfffff000) >>> 0) === 0xe2812000) add = at; // add r2,r1,#
+    }
+    if (!lo || !hi || !add) fail('unexpected-layout', `maker note parameter list at 0x${call.toString(16)}`);
+    const list = (movImmediate(p.word(lo)) | (movImmediate(p.word(hi)) << 16)) >>> 0;
+    const length = p.word(add) & 0xff;
+    if ((p.word(add) & 0xf00) !== 0) fail('unexpected-layout', `maker note parameter list at 0x${call.toString(16)}: length`);
+    const styles = p.readMapped(list, length);
+    if (styles.some((s) => s >= EXTRA_FIRST_STYLE)) fail('unexpected-layout', 'maker note parameter list already has added styles');
+    if (!styles.includes(CY)) continue;
+    const grown = concat([styles, Uint8Array.from({ length: count }, (_, i) => EXTRA_FIRST_STYLE + i)]);
+    const at = p.append(grown, 4);
+    p.setWord(lo, movWord(1, at & 65535), 'added slots: maker note parameters of Cinema Yellow');
+    p.setWord(hi, movWord(1, at >>> 16, true), 'added slots: maker note parameters of Cinema Yellow');
+    p.setWord(add, assembleWords(`add r2,r1,#${grown.length}`, add)[0], 'added slots: maker note parameters of Cinema Yellow');
+    extended++;
+  }
+  if (extended !== PARAM_LISTS_WITH_CY) fail('unexpected-layout', `maker note parameter lists: ${extended} with Cinema Yellow, expected ${PARAM_LISTS_WITH_CY}`);
+  // Readers: RAW development's record, then playback's numbering and its style.
+  hook(p, 0x537d575c, 0xe300310a, `sub r3,r0,#${EXTRA_TONE_CODE & 0xff00};sub r3,r3,#${EXTRA_TONE_CODE & 0xff};cmp r3,#${n};bhi native;add r3,r3,#${EXTRA_FIRST_STYLE};b #0x537d57ac;native:movw r3,#0x10a;b #0x537d5760`, 'added slots: look of a RAW file');
+  hook(p, 0x537d89b0, 0xe3003109, `sub r3,r0,#${EXTRA_TONE_CODE & 0xff00};sub r3,r3,#${EXTRA_TONE_CODE & 0xff};cmp r3,#${n};bhi native;add r2,r3,#${PLAY_FIRST_EXTRA};b #0x537d8a00;native:movw r3,#0x109;b #0x537d89b4`, 'added slots: playback look');
+  // 0x533A3804: r0 = number - 1, r4 = where the style goes (may be null).
+  hook(p, 0x533a3824, 0xe3500013, `sub r3,r0,#${PLAY_FIRST_EXTRA - 1};cmp r3,#${n};bhi native;cmp r4,#0;beq #0x533a3854;add r3,r3,#${EXTRA_FIRST_STYLE};strb r3,[r4];b #0x533a3844;native:cmp r0,#0x13;b #0x533a3828`, 'added slots: playback look');
+  // Playback information's parameters: r3 = style - 8, the added looks as Cinema Yellow (10).
+  hook(p, 0x533a7628, 0xe3530016, `cmp r3,#${EXTRA_FIRST_STYLE - 8};blo native;cmp r3,#${EXTRA_FIRST_STYLE - 8 + count};movlo r3,#${CY - 8};native:cmp r3,#0x16;b #0x533a762c`, 'added slots: playback parameters of Cinema Yellow');
+}
+
+// -------------------------------------------------------------- halation on the parameter screens
+
+/** The RAW development model's look of the current base, through the model getter chain. */
+const RAW_LOOK_CALLS = 'bl #0x5323ea84;bl #0x5323f078;bl #0x5336bde8';
+
+/**
+ * For an added look, Cinema's Toning on the parameter screens (shooting: ImageControlDetail-
+ * Controller, the style at +0x19C; RAW development: RawDevelopmentImageControlDetailSetController,
+ * the look asked from the model) shows as Halation: its name (the subtitle, from a table of texts
+ * per parameter kind: Toning is text 339), its icon in the list (0x16F) and its slider scale
+ * (Cinema's colour scales 0x23D / 0x23E). The values are Toning's 0..2: Off, Weak, Strong.
+ */
+function installHalationScreens(p: Patch, count: number): void {
+  const n = count - 1;
+  const RAW = RAW_FIRST_EXTRA;
+  // Shooting: subtitle (r6 the table entry, r5 the controller).
+  hook(p, 0x531ca7cc, 0xe1d610b2, `ldrh r1,[r6,#2];movw ip,#${TONING_TEXT};cmp r1,ip;bne done;ldrb ip,[r5,#0x19c];sub ip,ip,#${EXTRA_FIRST_STYLE};cmp ip,#${n};movwls r1,#${HALATION_TEXT_ID};done:b #0x531ca7d0`, 'halation: name of the parameter');
+  // Shooting: slider scale (r3 the style, r6 the controller).
+  hook(p, 0x531c7ae0, 0xe3530012, `sub ip,r3,#${EXTRA_FIRST_STYLE};cmp ip,#${n};movwls r3,#${HALATION_SCALE_ICON_ID};bls #0x531c7af8;cmp r3,#0x12;b #0x531c7ae4`, 'halation: slider scale');
+  // Shooting: list icon (controller r7, r6).
+  for (const [at, ctl] of [[0x531c973c, 'r7'], [0x531c982c, 'r6']] as const) {
+    hook(p, at, 0xe300116f, `ldrb r1,[${ctl},#0x19c];sub r1,r1,#${EXTRA_FIRST_STYLE};cmp r1,#${n};movw r1,#${TONING_ICON};movwls r1,#${HALATION_ICON_ID};b #${at + 4}`, 'halation: list icon');
+  }
+  // RAW development: subtitle (r7 the table entry).
+  hook(p, 0x531a833c, 0xe1d710b2, `ldrh r1,[r7,#2];movw ip,#${TONING_TEXT};cmp r1,ip;bne done;push {r0,r2,r3,lr};${RAW_LOOK_CALLS};sub r0,r0,#${RAW};cmp r0,#${n};movw r1,#${TONING_TEXT};movwls r1,#${HALATION_TEXT_ID};pop {r0,r2,r3,lr};done:b #0x531a8340`, 'halation: name of the parameter (RAW development)');
+  // RAW development: slider scale (r3 the base kind, 8 = Cinema Yellow's).
+  hook(p, 0x531a6acc, 0xe3530008, `push {r0,r1,r2,lr};${RAW_LOOK_CALLS};sub ip,r0,#${RAW};pop {r0,r1,r2,lr};ldrb r3,[r6,#0x19b];cmp ip,#${n};movwls r3,#${HALATION_SCALE_ICON_ID};bls #0x531a6ae4;cmp r3,#8;b #0x531a6ad0`, 'halation: slider scale (RAW development)');
+  // RAW development: list icon.
+  for (const at of [0x531a88d0, 0x531a89e8]) {
+    hook(p, at, 0xe300116f, `push {r0,r2,r3,lr};${RAW_LOOK_CALLS};sub r0,r0,#${RAW};cmp r0,#${n};movw r1,#${TONING_ICON};movwls r1,#${HALATION_ICON_ID};pop {r0,r2,r3,lr};b #${at + 4}`, 'halation: list icon (RAW development)');
+  }
+}
+
 // -------------------------------------------------------------- reading them back
 
 /**
@@ -622,6 +833,8 @@ export function readExtraSlots(rtos: Uint8Array, iconbin: Uint8Array, count: num
       const icon = iconbin.slice(iconOffset, iconOffset + EXTRA_ICON_BYTES);
       out.push({ name, matrixQ13, curves, ...(postQ9 ? { postQ9 } : {}), icon });
     }
+    const halation = readHalation(p, count);
+    if (halation) halation.forEach((h, k) => { if (h) out[k].halation = true; });
     return out;
   } catch {
     return null;
