@@ -1,3 +1,7 @@
+# Current validation - 0.7.4-en.5
+
+See RELEASE-NOTES.md and SYNC-REPORT.md for the current scope and limits.
+
 # Validation — Ricoh GR Customizer 0.7.3-en.4
 
 ## Current update

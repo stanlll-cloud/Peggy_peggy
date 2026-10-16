@@ -1,6 +1,6 @@
 RICOH GR CUSTOMIZER - START HERE
 
-Version: 0.7.3-en.4, based on upstream 0.7.3.
+Version: 0.7.4-en.5, based on upstream 0.7.4.
 Previously tested models: Ricoh GR IV and Ricoh GR IV HDF (owner-reported earlier edition).
 This update has not been tested on a physical Mac or camera.
 
@@ -24,3 +24,7 @@ Download the new ZIP and replace the app manually. In-app signed installation is
 
 This is a community beta. Read the guide before writing firmware to a card.
 Complete corresponding source and license notices are included in this package.
+
+RESTORING FACTORY FIRMWARE
+Reset camera settings first: Setup > Reset > Reset to Factory Default.
+Modified slots, aspect ratios, ADJ soft focus and date imprint settings may freeze factory firmware menus. The app asks for confirmation in red; Cancel is focused.

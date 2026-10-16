@@ -1,18 +1,15 @@
-# Ricoh GR Customizer 0.7.3-en.4
+# Ricoh GR Customizer 0.7.4-en.5
 
-Based on upstream 0.7.3, commit 675ba64f8cf30811a8d4d4a6899f6fbeb445f490.
+Based on upstream commit 89d2a66e23104a278512f8fc511fc9d7c5a10d96 (source version 0.7.4; latest published upstream release at sync: v0.7.3).
 
-- Add film-style red halation to added preset slots. Highlight thresholds follow each preset.
-- Include upstream RAW-development fixes and added-slot write support.
-- Keep the English / Traditional Chinese interface and LUTs Maker links.
-- Include the English PDF guide with an updated halation and manual-update supplement.
+- Preserve the upstream red camera-reset warning before writing factory firmware, including official backups. Cancel receives focus; explicit confirmation is required.
+- Translate all six new labels into English and Traditional Chinese. Keep the default Traditional Chinese interface, English switch, branding and More Color Recipes link.
+- Include the English PDF guide, a new factory-reset supplement, start-here instructions, complete corresponding source and GPL-2.0 notices.
 
-The community app's update addresses now point to this repository. The original signature checks remain unchanged. Signed in-app installation has not been provisioned for this edition: get updates from the README download link and replace the app manually.
+Community updates are manual downloads from this repository. Independent signed in-app installation is not configured. Signature checks remain unchanged.
 
-## Validation and limits
+## Validation limits
 
-Frontend TypeScript / production build, translation-key coverage and placeholders, Go package tests, and Mac Intel / Apple silicon cross-build were checked. Core tests: 118 passed, 110 skipped; the bridge suite cannot collect without the private official.bin firmware fixture. No firmware fixture or bypass was added.
+TypeScript / production build and 350 translation keys/placeholders passed. The actual confirmation functions and dialog were exercised for cancel, confirm, red warning and focus attributes. Core tests: 118 passed, 110 skipped; one collection failure requires private official.bin. No dummy firmware or bypass was added.
 
-The Mac app is ad-hoc signed. It is not Developer ID signed or notarized. There has been no physical Mac launch, memory-card write or camera flash test of this update. Earlier owner-reported GR IV / GR IV HDF testing applies to the earlier edition. This remains a community beta, not a claim of camera-tested equivalence.
-
-Core firmware behavior, defaults and safety checks match upstream. Presentation changes and repository-specific update destinations are documented in SYNC-REPORT.md.
+Mac Intel and Apple silicon cross-build and ad-hoc signing checked. Physical Mac launch, Apple codesign validation, memory-card writing and camera flashing were not performed. Earlier owner-reported GR IV / GR IV HDF testing applies to the earlier edition only. Community beta; not Developer ID signed or notarized.

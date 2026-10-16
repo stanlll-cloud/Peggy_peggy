@@ -1,5 +1,8 @@
 import { useSyncExternalStore } from 'react';
 const en = {
+  resetConfirmTitle: 'Write factory firmware', resetConfirmOk: 'I have reset the camera — write factory firmware',
+  resetNoteTitle: 'Reset the camera\'s settings before going back to the factory firmware', resetNoteBody: 'Settings made with GR Mod\'s firmware (an added Image Control slot or aspect ratio selected, soft focus on the ADJ lever, the date imprint) are unknown to the factory firmware and can freeze its menus.',
+  resetNotePath: 'Camera menu › Setup (wrench) › Reset › Reset to Factory Default', resetNoteMin: 'This clears all of the camera\'s settings. If you would rather not, at least set Image Control back to a factory look, the aspect ratio to 3:2, and remove soft focus from the ADJ lever.',
   app: 'Ricoh GR Customizer',
   navIC: 'Image Control', navWall: 'Power-Off Image', navScript: 'Open factory menu', navCopies: 'Firmware Backups',
   navRatio: 'Aspect Ratio', ratioAdd: 'Add ratio', ratioFactory: 'Factory', ratioGray: 'Gray', ratioMax: 'Up to {n}', ratioLine: 'Added aspect ratios {n}  ·  {l}',
@@ -110,6 +113,9 @@ const en = {
 };
 export type Key = keyof typeof en;
 const zhTW: Record<Key, string> = {
+  resetConfirmTitle: '寫入原廠韌體', resetConfirmOk: '我已重設相機設定，寫入原廠韌體',
+  resetNoteTitle: '刷回原廠韌體前，請先重設相機設定', resetNoteBody: '使用 GR Mod 韌體時的新增影像控制槽位、新增長寬比、ADJ 撥桿上的柔焦、日期列印等設定，原廠韌體無法識別，可能導致選單凍結或無法正常使用。',
+  resetNotePath: '相機選單 › 設定（扳手）› 重設 › 重設為出廠預設設定', resetNoteMin: '重設會清除相機的所有設定。若不想全部重設，至少將影像控制改回原廠預設、長寬比改回 3:2，並從 ADJ 撥桿移除柔焦。',
   app: "Ricoh GR Customizer",
   navIC: '影像控制', navWall: '關機畫面', navScript: '開啟工廠選單', navCopies: "韌體備份",
   navRatio: '長寬比', ratioAdd: '新增比例', ratioFactory: '原廠', ratioGray: '灰色', ratioMax: '最多 {n} 個', ratioLine: '新增長寬比 {n}  ·  {l}',
