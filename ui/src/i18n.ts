@@ -109,7 +109,7 @@ const en = {
   wnTitle: 'What’s new', wnUpdated: 'Updated to v{v}', wnFrom: '(from v{v})', wnLoading: 'Getting the release notes…', wnError: 'Cannot get the release notes', wnNone: 'No notes for this version', wnGitHub: 'View on GitHub', wnCurrent: 'current',
   updReasonManual: 'This release cannot be installed from inside Ricoh GR Customizer; please download it from the download page.',
   tOvVersionT: 'Version details', tOvVersionB: 'See what changed in this version and in earlier ones.',
-  halation: 'Halation', haloLabel: 'Halo', halationSub: 'Every added slot has halation: in the camera, set the slot\'s Halation parameter to Weak or Strong in Image Control. Here it is only previewed', haloPreview: 'Preview', haloOff: 'Off', haloWeak: 'Weak', haloStrong: 'Strong',
+  halation: 'Halation', haloLabel: 'Halo', halationSub: 'Set in the camera, in Image Control\'s parameter adjustment. Here it is only previewed', haloPreview: 'Preview', haloOff: 'Off', haloWeak: 'Weak', haloStrong: 'Strong',
 };
 export type Key = keyof typeof en;
 const zhTW: Record<Key, string> = {
@@ -222,7 +222,7 @@ const zhTW: Record<Key, string> = {
   wnTitle: '更新內容', wnUpdated: '已更新至 v{v}', wnFrom: '（從 v{v}）', wnLoading: '正在取得更新內容…', wnError: '無法取得更新內容', wnNone: '此版本沒有更新說明', wnGitHub: '在 GitHub 檢視', wnCurrent: '目前',
   updReasonManual: '此版本無法在 Ricoh GR Customizer 內直接安裝，請至下載頁手動下載。',
   tOvVersionT: '版本詳情', tOvVersionB: '在此查看目前版本及歷史版本的更新內容。',
-  halation: '光暈', haloLabel: '光暈', halationSub: '每個新增槽位都具備光暈：在相機影像控制中，將該槽位的「光暈」參數設為弱或強即可開啟。此處僅用於預覽效果', haloPreview: '預覽', haloOff: '關', haloWeak: '弱', haloStrong: '強',
+  halation: '光暈', haloLabel: '光暈', halationSub: '在相機內影像控制的參數調整處控制。此處僅用於預覽', haloPreview: '預覽', haloOff: '關', haloWeak: '弱', haloStrong: '強',
 };
 
 export type UiLanguage = 'en' | 'zh-TW';

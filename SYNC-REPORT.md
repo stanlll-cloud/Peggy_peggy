@@ -1,9 +1,9 @@
-# Synchronization review - 0.7.4-en.6
+# Synchronization review - 0.7.4-en.7
 
-Published upstream baseline: 589e7f48fe21bfdd7e65f5b9973b15e490cd8120.
-Previous baseline: 89d2a66e23104a278512f8fc511fc9d7c5a10d96.
+Published upstream baseline: 33114280a86fb4a14d5e977dd643d4a418366f2a.
+Previous baseline: 589e7f48fe21bfdd7e65f5b9973b15e490cd8120.
 
-The upstream patch was applied using git apply --3way. README and i18n conflicts were resolved by retaining fork presentation and incorporating the new upstream documentation and updated translations. No functional conflict remained.
+The upstream patch was applied using git apply --3way. The i18n conflict was resolved by preserving the fork dictionaries and applying the shorter upstream English text plus its Traditional Chinese translation. Core engine and regression-test changes applied cleanly. No functional conflict remained.
 
 ## Functional code
 
@@ -19,8 +19,12 @@ Ricoh GR Customizer name, Traditional Chinese default plus persistent English to
 
 ## Actual checks and limitations
 
-Frontend build, 349-key/placeholder parity, language switching, actual reset confirmation functions and dialog server render passed. Core: 118 passed / 111 skipped / bridge suite cannot collect without private official.bin. Go tests run against their expected upstream placeholder; production UI embedded for build. Universal Mach-O and ad-hoc signatures checked. Embedded production page, host.js and linked assets served HTTP 200 in a Linux smoke check (not Mac execution). PDF supplement rendered and reviewed; package contents and remote ZIP hash verified before completion.
+Frontend build, 349-key/placeholder parity, language switching, actual reset confirmation functions and dialog server render passed. Core: 118 passed / 112 skipped / bridge suite cannot collect without private official.bin. Go tests run against their expected upstream placeholder; production UI embedded for build. Universal Mach-O and ad-hoc signatures checked. Embedded production page, host.js and linked assets served HTTP 200 in a Linux smoke check (not Mac execution). PDF supplement rendered and reviewed; package contents and remote ZIP hash verified before completion.
 
 No physical Mac launch, Apple codesign verification, memory-card write or camera flash. Previous owner-reported GR IV/HDF tests do not certify this update.
 
 The actual extraSpecs function was exercised with six slots whose old halation switches were false: all six now emit halation=true, exactly as upstream. Monochrome emits no extra slots. halationOf defaults to on=true, preview=0. The upstream six-slot firmware combination test is included unchanged but skipped without private official.bin; no camera behavior pass is claimed.
+
+## Current ratio regression check
+
+Bundled the unchanged actual core Engine and called previewRatio through Engine.prototype (the method uses no firmware instance state). The 14 input strings from the upstream regression test all returned in under 10 ms; proposed neighbours were rechecked and valid. This checks the real method without creating dummy firmware, bypassing Engine.open or changing production code. The upstream fixture-dependent test remains skipped without official.bin. Full firmware/camera behavior is not verified by this method check.
