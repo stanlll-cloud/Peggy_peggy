@@ -1,8 +1,8 @@
 import { useSyncExternalStore } from 'react';
 const en = {
-  resetConfirmTitle: 'Write factory firmware', resetConfirmOk: 'I have reset the camera — write factory firmware',
+  resetConfirmTitle: 'Write factory firmware', resetConfirmOk: 'Camera reset — write factory firmware',
   resetNoteTitle: 'Reset the camera\'s settings before going back to the factory firmware', resetNoteBody: 'Settings made with GR Mod\'s firmware (an added Image Control slot or aspect ratio selected, soft focus on the ADJ lever, the date imprint) are unknown to the factory firmware and can freeze its menus.',
-  resetNotePath: 'Camera menu › Setup (wrench) › Reset › Reset to Factory Default', resetNoteMin: 'This clears all of the camera\'s settings. If you would rather not, at least set Image Control back to a factory look, the aspect ratio to 3:2, and remove soft focus from the ADJ lever.',
+  resetNotePath: 'Camera menu › Setup (wrench) › Reset › Reset to Factory Default',
   app: 'Ricoh GR Customizer',
   navIC: 'Image Control', navWall: 'Power-Off Image', navScript: 'Open factory menu', navCopies: 'Firmware Backups',
   navRatio: 'Aspect Ratio', ratioAdd: 'Add ratio', ratioFactory: 'Factory', ratioGray: 'Gray', ratioMax: 'Up to {n}', ratioLine: 'Added aspect ratios {n}  ·  {l}',
@@ -109,13 +109,13 @@ const en = {
   wnTitle: 'What’s new', wnUpdated: 'Updated to v{v}', wnFrom: '(from v{v})', wnLoading: 'Getting the release notes…', wnError: 'Cannot get the release notes', wnNone: 'No notes for this version', wnGitHub: 'View on GitHub', wnCurrent: 'current',
   updReasonManual: 'This release cannot be installed from inside Ricoh GR Customizer; please download it from the download page.',
   tOvVersionT: 'Version details', tOvVersionB: 'See what changed in this version and in earlier ones.',
-  halation: 'Halation', haloLabel: 'Halo', halationSub: 'When on, adds the red halation of film without a remjet layer around the highlights', haloPreview: 'Preview', haloOff: 'Off', haloWeak: 'Weak', haloStrong: 'Strong',
+  halation: 'Halation', haloLabel: 'Halo', halationSub: 'Every added slot has halation: in the camera, set the slot\'s Halation parameter to Weak or Strong in Image Control. Here it is only previewed', haloPreview: 'Preview', haloOff: 'Off', haloWeak: 'Weak', haloStrong: 'Strong',
 };
 export type Key = keyof typeof en;
 const zhTW: Record<Key, string> = {
   resetConfirmTitle: '寫入原廠韌體', resetConfirmOk: '我已重設相機設定，寫入原廠韌體',
   resetNoteTitle: '刷回原廠韌體前，請先重設相機設定', resetNoteBody: '使用 GR Mod 韌體時的新增影像控制槽位、新增長寬比、ADJ 撥桿上的柔焦、日期列印等設定，原廠韌體無法識別，可能導致選單凍結或無法正常使用。',
-  resetNotePath: '相機選單 › 設定（扳手）› 重設 › 重設為出廠預設設定', resetNoteMin: '重設會清除相機的所有設定。若不想全部重設，至少將影像控制改回原廠預設、長寬比改回 3:2，並從 ADJ 撥桿移除柔焦。',
+  resetNotePath: '相機選單 › 設定（扳手）› 重設 › 重設為出廠預設設定',
   app: "Ricoh GR Customizer",
   navIC: '影像控制', navWall: '關機畫面', navScript: '開啟工廠選單', navCopies: "韌體備份",
   navRatio: '長寬比', ratioAdd: '新增比例', ratioFactory: '原廠', ratioGray: '灰色', ratioMax: '最多 {n} 個', ratioLine: '新增長寬比 {n}  ·  {l}',
@@ -222,7 +222,7 @@ const zhTW: Record<Key, string> = {
   wnTitle: '更新內容', wnUpdated: '已更新至 v{v}', wnFrom: '（從 v{v}）', wnLoading: '正在取得更新內容…', wnError: '無法取得更新內容', wnNone: '此版本沒有更新說明', wnGitHub: '在 GitHub 檢視', wnCurrent: '目前',
   updReasonManual: '此版本無法在 Ricoh GR Customizer 內直接安裝，請至下載頁手動下載。',
   tOvVersionT: '版本詳情', tOvVersionB: '在此查看目前版本及歷史版本的更新內容。',
-  halation: '光暈', haloLabel: '光暈', halationSub: '啟用後，在照片高光周圍增添仿無防光暈背層底片的紅色光暈', haloPreview: '預覽', haloOff: '關', haloWeak: '弱', haloStrong: '強',
+  halation: '光暈', haloLabel: '光暈', halationSub: '每個新增槽位都具備光暈：在相機影像控制中，將該槽位的「光暈」參數設為弱或強即可開啟。此處僅用於預覽效果', haloPreview: '預覽', haloOff: '關', haloWeak: '弱', haloStrong: '強',
 };
 
 export type UiLanguage = 'en' | 'zh-TW';

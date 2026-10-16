@@ -1,6 +1,6 @@
 RICOH GR CUSTOMIZER - START HERE
 
-Version: 0.7.4-en.5, based on upstream 0.7.4.
+Version: 0.7.4-en.6, based on upstream 0.7.4.
 Previously tested models: Ricoh GR IV and Ricoh GR IV HDF (owner-reported earlier edition).
 This update has not been tested on a physical Mac or camera.
 
@@ -15,7 +15,8 @@ This update has not been tested on a physical Mac or camera.
 
 More color recipes: https://luts-maker.uk
 
-Halation: import a preset into an added slot, enable Halo, then compare Off / Weak / Strong in the preview.
+Halation: every added slot includes halation. Compare Off / Weak / Strong in the app preview.
+On the camera, choose Weak or Strong under the added slot's Halation parameter in Image Control.
 Write the new firmware to the card and install it in the camera for the new effect to apply.
 Camera and app preview use the upstream per-preset highlight threshold.
 

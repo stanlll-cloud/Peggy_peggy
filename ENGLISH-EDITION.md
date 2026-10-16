@@ -1,7 +1,7 @@
-# Ricoh GR Customizer — 0.7.3-en.4
+# Ricoh GR Customizer — 0.7.4-en.6
 
 An English-language community edition of [GR Mod](https://github.com/Maxwooow/Ricoh-GRMod).
-Upstream commit: 675ba64f8cf30811a8d4d4a6899f6fbeb445f490 (0.7.3).
+Upstream commit: 589e7f48fe21bfdd7e65f5b9973b15e490cd8120 (0.7.4).
 This edition is not an official Ricoh or Adobe product.
 
 ## Changes
@@ -16,7 +16,7 @@ This edition is not an official Ricoh or Adobe product.
 
 ## Install on macOS
 
-1. Extract Ricoh-GR-Customizer-0.7.3-en.4.zip.
+1. Extract Ricoh-GR-Customizer-0.7.4-en.6.zip.
 2. Move Ricoh GR Customizer.app to Applications. The displayed application name is Ricoh GR Customizer.
 3. Open the app. If macOS blocks it, use System Settings > Privacy & Security > Open Anyway.
 4. Allow access to removable volumes when prompted.
@@ -57,3 +57,7 @@ The preview photograph has separate terms documented in the upstream README; it 
 See VALIDATION.md for the checks actually completed for this build.
 No camera firmware has been flashed as part of this work. Mac launch, permissions,
 real memory-card access, and camera behavior need validation on physical hardware.
+
+## Current halation and restore instructions
+
+Every added slot includes halation support; the app only previews Off / Weak / Strong. Choose Weak or Strong with the camera slot's Halation parameter. Reset all camera settings before restoring factory firmware. There is no partial-reset alternative in the current upstream instructions.

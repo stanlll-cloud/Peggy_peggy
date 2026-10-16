@@ -17,7 +17,7 @@ Before restoring factory firmware, reset the camera settings first. The app disp
 
 ## Download
 
-[Download for Mac — Intel & Apple silicon](downloads/Ricoh-GR-Customizer-0.7.4-en.5.zip?raw=true)
+[Download for Mac — Intel & Apple silicon](downloads/Ricoh-GR-Customizer-0.7.4-en.6.zip?raw=true)
 
 Unzip and open **01-USER-GUIDE-English.pdf** first. The guide and **00-START-HERE.txt** are beside the app.
 
