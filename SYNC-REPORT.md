@@ -1,7 +1,7 @@
-# Synchronization review - 0.7.4-en.7
+# Synchronization review - 0.7.5-en.8
 
-Published upstream baseline: 33114280a86fb4a14d5e977dd643d4a418366f2a.
-Previous baseline: 589e7f48fe21bfdd7e65f5b9973b15e490cd8120.
+Published upstream baseline: e12ce7f7e1346740619e6df674d39487e507ebd9.
+Previous baseline: 33114280a86fb4a14d5e977dd643d4a418366f2a.
 
 The upstream patch was applied using git apply --3way. The i18n conflict was resolved by preserving the fork dictionaries and applying the shorter upstream English text plus its Traditional Chinese translation. Core engine and regression-test changes applied cleanly. No functional conflict remained.
 
@@ -27,4 +27,8 @@ The actual extraSpecs function was exercised with six slots whose old halation s
 
 ## Current ratio regression check
 
-Bundled the unchanged actual core Engine and called previewRatio through Engine.prototype (the method uses no firmware instance state). The 14 input strings from the upstream regression test all returned in under 10 ms; proposed neighbours were rechecked and valid. This checks the real method without creating dummy firmware, bypassing Engine.open or changing production code. The upstream fixture-dependent test remains skipped without official.bin. Full firmware/camera behavior is not verified by this method check.
+Bundled the unchanged actual core Engine and called previewRatio through Engine.prototype (the method uses no firmware instance state). The 14 input strings from the upstream regression test all returned in under 30 ms; proposed neighbours were rechecked and valid. This checks the real method without creating dummy firmware, bypassing Engine.open or changing production code. The upstream fixture-dependent test remains skipped without official.bin. Full firmware/camera behavior is not verified by this method check.
+
+## Version-only synchronization
+
+Upstream changed package.json version only. Applied with git apply --3way; resolved the version conflict to 0.7.5-en.8 while preserving the fork package identity and formatting. No functional sources changed. Historical regression checks above apply to identical source; frontend, translation, Go, core and Mac cross-build checks were rerun for this package. Latest published upstream release at check time remains v0.7.4.

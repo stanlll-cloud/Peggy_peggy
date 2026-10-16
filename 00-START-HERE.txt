@@ -1,6 +1,6 @@
 RICOH GR CUSTOMIZER - START HERE
 
-Version: 0.7.4-en.7, based on upstream 0.7.4.
+Version: 0.7.5-en.8, based on upstream 0.7.5.
 Previously tested models: Ricoh GR IV and Ricoh GR IV HDF (owner-reported earlier edition).
 This update has not been tested on a physical Mac or camera.
 

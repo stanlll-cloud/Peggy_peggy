@@ -1,4 +1,4 @@
-# Current validation - 0.7.4-en.7
+# Current validation - 0.7.5-en.8
 
 See RELEASE-NOTES.md and SYNC-REPORT.md for the current scope and limits.
 

@@ -1,8 +1,9 @@
-# Ricoh GR Customizer 0.7.4-en.7
+# Ricoh GR Customizer 0.7.5-en.8
 
-Based on upstream commit 33114280a86fb4a14d5e977dd643d4a418366f2a (source version 0.7.4; latest published upstream release at sync: v0.7.4).
+Based on upstream commit e12ce7f7e1346740619e6df674d39487e507ebd9 (source version 0.7.5; latest published upstream release at sync: v0.7.4).
 
-- Fix ratio-preview hangs on refused intermediate inputs, exactly as upstream. Fourteen actual preview-method inputs checked without loading firmware; all returned in under 10 ms.
+- Upstream version-only bump to 0.7.5; no functional source changes since 0.7.4-en.7.
+- Fix ratio-preview hangs on refused intermediate inputs, exactly as upstream. Fourteen actual preview-method inputs checked without loading firmware; all returned in under 30 ms.
 - Shorten halation help text in both languages.
 - Include halation in every added slot, with preview-only Off / Weak / Strong controls; camera-side Halation sets the actual strength. Unset preview defaults to Off.
 - Remove partial-reset alternative advice and allow dialog buttons to wrap.

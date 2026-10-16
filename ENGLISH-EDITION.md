@@ -1,7 +1,7 @@
-# Ricoh GR Customizer — 0.7.4-en.7
+# Ricoh GR Customizer — 0.7.5-en.8
 
 An English-language community edition of [GR Mod](https://github.com/Maxwooow/Ricoh-GRMod).
-Upstream commit: 33114280a86fb4a14d5e977dd643d4a418366f2a (0.7.4).
+Upstream commit: e12ce7f7e1346740619e6df674d39487e507ebd9 (0.7.5).
 This edition is not an official Ricoh or Adobe product.
 
 ## Changes
@@ -16,7 +16,7 @@ This edition is not an official Ricoh or Adobe product.
 
 ## Install on macOS
 
-1. Extract Ricoh-GR-Customizer-0.7.4-en.7.zip.
+1. Extract Ricoh-GR-Customizer-0.7.5-en.8.zip.
 2. Move Ricoh GR Customizer.app to Applications. The displayed application name is Ricoh GR Customizer.
 3. Open the app. If macOS blocks it, use System Settings > Privacy & Security > Open Anyway.
 4. Allow access to removable volumes when prompted.
