@@ -4,7 +4,7 @@
   "upstream_repository": "Maxwooow/Ricoh-GRMod",
   "published_upstream_commit": "e12ce7f7e1346740619e6df674d39487e507ebd9",
   "published_version": "0.7.5-en.8",
-  "candidate_upstream_commit": "c45d274b72d4bdcb578ce3aaca20a62cec9fe2df",
+  "candidate_upstream_commit": "226e14b1f9dff949e862c2a51c55254957826b96",
   "candidate_version": "0.7.6-en.9",
   "latest_upstream_release": "v0.7.5",
   "status": "candidate-validation-blocked",

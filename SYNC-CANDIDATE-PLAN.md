@@ -26,3 +26,9 @@ The upstream tools/shutdown/menu_check.py also requires built RTOS/ICONBIN and o
 5. Publish a new version only after necessary checks pass, retaining every old package and verifying remote downloads.
 
 Current code, PDFs and download packages on main were not replaced by this candidate. Existing Mac/camera testing limitations and unsigned one-click-update limitation remain. The ongoing upstream watch can continue; this is a candidate release-validation blocker, not a loss of repository access.
+
+## Follow-up upstream review — 2026-10-17
+
+Candidate now 226e14b1f9dff949e862c2a51c55254957826b96, three additional commits after c45d274. The build script now rejects stale UI bundles. End Screen pictures now reuse the camera's own End Screen controller in picture mode, and map the picture list to the End Screen hardware-key map. Upstream comments explicitly report that hardware keys previously did not work while touch did; this concerns the unpublished candidate, not the preserved en.8 release.
+
+Applied the follow-up patch to the isolated candidate after the initial three-way merge. Core and tools still match the new upstream exactly. The unchanged shutdown tests again pass 2 data tests and skip 3 firmware tests. The private official.bin and menu-emulation input images remain unavailable. No new Mac package, full UI equivalence result or camera test is claimed. Existing publication hold remains in effect; complete the review steps above before releasing.
