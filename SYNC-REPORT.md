@@ -32,3 +32,7 @@ Bundled the unchanged actual core Engine and called previewRatio through Engine.
 ## Version-only synchronization
 
 Upstream changed package.json version only. Applied with git apply --3way; resolved the version conflict to 0.7.5-en.8 while preserving the fork package identity and formatting. No functional sources changed. Historical regression checks above apply to identical source; frontend, translation, Go, core and Mac cross-build checks were rerun for this package. Latest published upstream release at check time remains v0.7.4.
+
+## Upstream release status — 2026-10-17
+
+Upstream [v0.7.5](https://github.com/Maxwooow/Ricoh-GRMod/releases/tag/v0.7.5) is now published. Its tag and the default branch both match the already packaged baseline e12ce7f7e1346740619e6df674d39487e507ebd9 exactly (zero commits / files changed). Keep the existing 0.7.5-en.8 ZIP and all earlier downloads unchanged; no code merge or rebuild is needed. Existing validation scope and limitations remain unchanged. Earlier v0.7.4 references above describe the release status when en.8 was built.

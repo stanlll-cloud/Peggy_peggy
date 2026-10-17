@@ -18,3 +18,7 @@ Community updates are manual downloads from this repository. Independent signed 
 TypeScript / production build and 349 translation keys/placeholders passed. The actual confirmation functions and dialog were exercised for cancel, confirm, red warning and focus attributes. Core tests: 118 passed, 112 skipped; one collection failure requires private official.bin. No dummy firmware or bypass was added.
 
 Mac Intel and Apple silicon cross-build and ad-hoc signing checked. Physical Mac launch, Apple codesign validation, memory-card writing and camera flashing were not performed. Earlier owner-reported GR IV / GR IV HDF testing applies to the earlier edition only. Community beta; not Developer ID signed or notarized.
+
+## Upstream release status — 2026-10-17
+
+Upstream [v0.7.5](https://github.com/Maxwooow/Ricoh-GRMod/releases/tag/v0.7.5) is now published. Its tag and the default branch both match the already packaged baseline e12ce7f7e1346740619e6df674d39487e507ebd9 exactly (zero commits / files changed). Keep the existing 0.7.5-en.8 ZIP and all earlier downloads unchanged; no code merge or rebuild is needed. Existing validation scope and limitations remain unchanged. Earlier v0.7.4 references above describe the release status when en.8 was built.
