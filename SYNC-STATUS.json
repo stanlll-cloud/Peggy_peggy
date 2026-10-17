@@ -4,15 +4,18 @@
   "upstream_repository": "Maxwooow/Ricoh-GRMod",
   "published_upstream_commit": "e12ce7f7e1346740619e6df674d39487e507ebd9",
   "published_version": "0.7.5-en.8",
-  "candidate_upstream_commit": "e12ce7f7e1346740619e6df674d39487e507ebd9",
-  "candidate_version": "0.7.5-en.8",
+  "candidate_upstream_commit": "c45d274b72d4bdcb578ce3aaca20a62cec9fe2df",
+  "candidate_version": "0.7.6-en.9",
   "latest_upstream_release": "v0.7.5",
-  "status": "published-community-beta",
+  "status": "candidate-validation-blocked",
   "branch": "main",
   "limitations": [
     "Update destinations point to this fork. Updates are distributed through the README download link; signed in-app installation is not provisioned. Verification checks are unchanged.",
     "Complete firmware tests require private official.bin; no Mac/camera verification performed.",
     "Ad-hoc signed. Physical Mac launch, Apple codesign verification and camera flashing have not been performed for this update."
   ],
-  "upstream_release_url": "https://github.com/Maxwooow/Ricoh-GRMod/releases/tag/v0.7.5"
+  "upstream_release_url": "https://github.com/Maxwooow/Ricoh-GRMod/releases/tag/v0.7.5",
+  "candidate_blockers": [
+    "New firmware-integrated End Screen pictures require private core/testdata/private/official.bin for three firmware tests and built/official RTOS images for menu emulation; unavailable. No candidate Mac build or release completed."
+  ]
 }
