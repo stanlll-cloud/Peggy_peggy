@@ -32,3 +32,11 @@ Current code, PDFs and download packages on main were not replaced by this candi
 Candidate now 226e14b1f9dff949e862c2a51c55254957826b96, three additional commits after c45d274. The build script now rejects stale UI bundles. End Screen pictures now reuse the camera's own End Screen controller in picture mode, and map the picture list to the End Screen hardware-key map. Upstream comments explicitly report that hardware keys previously did not work while touch did; this concerns the unpublished candidate, not the preserved en.8 release.
 
 Applied the follow-up patch to the isolated candidate after the initial three-way merge. Core and tools still match the new upstream exactly. The unchanged shutdown tests again pass 2 data tests and skip 3 firmware tests. The private official.bin and menu-emulation input images remain unavailable. No new Mac package, full UI equivalence result or camera test is claimed. Existing publication hold remains in effect; complete the review steps above before releasing.
+
+## Upstream v0.8.0 — 2026-10-17
+
+New commit/tag: 16327dbe7bf9e5fd5e4db99ef47237b2240e5487. Latest release is now v0.8.0. Candidate designation is 0.8.0-en.9, not a published package.
+
+The UI now offers power-off pictures only through the camera menu and writes firmware from every editing page. Legacy startup-script creation/restoration controls are removed upstream; legacy wallpaper core remains for older formats. Store, page, output-bar and tour changes must be synchronized as functional changes, not overridden to preserve the previous UI. Existing fork translations must be reconciled with removed/new keys, and English instructions/PDF must no longer prescribe the legacy script flow for 0.8.
+
+This run inspected the upstream diff and verified the release tag against its commit. It did not merge the new UI changes, complete UI/bridge behavioral equivalence checks, build a Mac candidate or publish new binaries. The private firmware fixture and menu-emulation images are still absent, so the previously recorded firmware-validation hold remains. Published version 0.7.5-en.8 and every existing package remain unchanged. The older candidate review sections above are historical; this section is the latest candidate scope.
