@@ -1,21 +1,23 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-10-17",
+  "checked_at": "2026-10-21",
   "upstream_repository": "Maxwooow/Ricoh-GRMod",
   "published_upstream_commit": "e12ce7f7e1346740619e6df674d39487e507ebd9",
   "published_version": "0.7.5-en.8",
-  "candidate_upstream_commit": "16327dbe7bf9e5fd5e4db99ef47237b2240e5487",
-  "candidate_version": "0.8.0-en.9",
-  "latest_upstream_release": "v0.8.0",
+  "candidate_upstream_commit": "3eadc6a057f46c2f357c7bd7b5470efc61fdaab7",
+  "candidate_version": "0.8.1-en.10",
+  "latest_upstream_release": "v0.8.1",
   "status": "candidate-validation-blocked",
   "branch": "main",
   "limitations": [
     "Update destinations point to this fork. Updates are distributed through the README download link; signed in-app installation is not provisioned. Verification checks are unchanged.",
-    "Complete firmware tests require private official.bin; no Mac/camera verification performed.",
-    "Ad-hoc signed. Physical Mac launch, Apple codesign verification and camera flashing have not been performed for this update."
+    "The official 1.11 archive was verified against upstream's pinned size and SHA-256; five additional private fixtures remain unavailable.",
+    "No Go toolchain was available for Go tests or Intel/Apple-silicon packaging. No physical Mac or camera verification was performed."
   ],
-  "upstream_release_url": "https://github.com/Maxwooow/Ricoh-GRMod/releases/tag/v0.8.0",
+  "upstream_release_url": "https://github.com/Maxwooow/Ricoh-GRMod/releases/tag/v0.8.1",
   "candidate_blockers": [
-    "New firmware-integrated End Screen pictures require private core/testdata/private/official.bin for three firmware tests and built/official RTOS images for menu emulation; unavailable. No candidate Mac build or release completed."
+    "Resolve README/package/app/i18n three-way conflicts while preserving upstream event bindings and firmware-download safeguards.",
+    "Five core tests still require official.decoded, B.bin, C.bin, q400.xmp and c200.xmp; shutdown menu emulation inputs/environment remain incomplete.",
+    "Go tests and Mac Intel/Apple-silicon builds have not run because this environment has no Go toolchain."
   ]
 }
