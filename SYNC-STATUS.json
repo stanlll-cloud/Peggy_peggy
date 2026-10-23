@@ -6,7 +6,7 @@
   "published_version": "0.7.5-en.8",
   "candidate_upstream_commit": "fb14a2a9c35d822a306b966ecd00c3a602a56763",
   "candidate_version": "0.8.2-en.11",
-  "latest_upstream_release": "v0.8.1",
+  "latest_upstream_release": "v0.8.2",
   "status": "candidate-validation-blocked",
   "branch": "main",
   "limitations": [
@@ -14,7 +14,7 @@
     "The official 1.11 archive was verified against upstream's pinned size and SHA-256; five additional private fixtures remain unavailable.",
     "No Go toolchain was available for Go tests or Intel/Apple-silicon packaging. No physical Mac or camera verification was performed."
   ],
-  "upstream_release_url": "https://github.com/Maxwooow/Ricoh-GRMod/releases/tag/v0.8.1",
+  "upstream_release_url": "https://github.com/Maxwooow/Ricoh-GRMod/releases/tag/v0.8.2",
   "candidate_blockers": [
     "Reconcile cumulative three-way conflicts and new 0.8.2 UI/bridge changes; complete functional equivalence and bilingual translation review.",
     "Five core tests still require official.decoded, B.bin, C.bin, q400.xmp and c200.xmp; shutdown menu emulation inputs/environment remain incomplete.",
