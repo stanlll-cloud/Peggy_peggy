@@ -4,8 +4,8 @@
   "upstream_repository": "Maxwooow/Ricoh-GRMod",
   "published_upstream_commit": "e12ce7f7e1346740619e6df674d39487e507ebd9",
   "published_version": "0.7.5-en.8",
-  "candidate_upstream_commit": "fb14a2a9c35d822a306b966ecd00c3a602a56763",
-  "candidate_version": "0.8.2-en.11",
+  "candidate_upstream_commit": "12c58a5d26f4fe045ada8bc926726c2c83012b4e",
+  "candidate_version": "0.8.3-en.12",
   "latest_upstream_release": "v0.8.2",
   "status": "candidate-validation-blocked",
   "branch": "main",
@@ -16,7 +16,7 @@
   ],
   "upstream_release_url": "https://github.com/Maxwooow/Ricoh-GRMod/releases/tag/v0.8.2",
   "candidate_blockers": [
-    "Reconcile cumulative three-way conflicts and new 0.8.2 UI/bridge changes; complete functional equivalence and bilingual translation review.",
+    "Reconcile cumulative three-way conflicts through 0.8.3, including orientation/menu changes; complete functional equivalence and bilingual UI/bridge review.",
     "Five core tests still require official.decoded, B.bin, C.bin, q400.xmp and c200.xmp; shutdown menu emulation inputs/environment remain incomplete.",
     "Go tests and Mac Intel/Apple-silicon builds have not run because this environment has no Go toolchain."
   ]
