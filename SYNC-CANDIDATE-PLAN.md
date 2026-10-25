@@ -70,3 +70,13 @@ Candidate is now 12c58a5d26f4fe045ada8bc926726c2c83012b4e (five commits after v0
 Date imprint follows camera orientation for shooting and RAW development, including main image, screennail and thumbnail. The new in-camera Follow Orientation switch defaults On; the final implementation captures orientation at exposure start, and corrects the third submenu row's value-icon position. New orientation emulator coverage and date/menu tests accompany these changes. Use the final implementation, not the superseded intermediate orientation hook.
 
 This run verified the upstream HEAD and source version and inspected commit descriptions and changed-file scope (13 files). It did not merge or build this candidate, run its tests, or establish full UI/bridge equivalence. Go remains absent. Previously documented private test inputs and menu-emulation requirements remain unresolved. Existing published 0.7.5-en.8 and older packages were not changed. Extend the cumulative three-way merge, bilingual review and firmware/menu/Go/Mac validation plan above to cover these orientation changes before any release. No physical camera or Mac test is claimed.
+
+## Upstream source 0.8.5 — 2026-10-25
+
+Observed HEAD: 8b4ca5eac085d4acd0464f87539874cc33931751, 86 commits after the previous 0.8.3 candidate. Latest official release remains v0.8.2. Candidate designation: 0.8.5-en.13, unpublished.
+
+The cumulative scope now includes GR III / III HDF (2.10) and GR IIIx / IIIx HDF (1.60), family-specific firmware caching and project migration, GR IV Direct Flash, date-imprint look names, look layout/visibility and color-fitting changes. Upstream README contains historical round descriptions with differing defaults; the final source and tests must decide behavior, not a paraphrased README. Upstream-reported hardware tests are not tests performed by this fork.
+
+This run checked the remote commit comparison, HEAD, package version and README scope. No merge, candidate test, Mac build or functional equivalence claim is made. Go is still absent. Existing private-fixture and emulator blockers remain. Extend the cumulative three-way merge and bilingual UI/bridge audit to all camera families, migration/cache paths, new exposure logic and new tests. Keep functional files identical to the pinned upstream wherever possible; separately list approved branding/i18n/link/package/doc changes. Complete firmware, Go and both Mac architecture checks and bundle-guide verification before publishing. Published 0.7.5-en.8 and older packages are retained.
+
+Compare: https://github.com/Maxwooow/Ricoh-GRMod/compare/12c58a5d26f4fe045ada8bc926726c2c83012b4e...8b4ca5eac085d4acd0464f87539874cc33931751
