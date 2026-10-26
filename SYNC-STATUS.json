@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-10-25",
+  "checked_at": "2026-10-26",
   "upstream_repository": "Maxwooow/Ricoh-GRMod",
   "published_upstream_commit": "e12ce7f7e1346740619e6df674d39487e507ebd9",
   "published_version": "0.7.5-en.8",
   "candidate_upstream_commit": "8b4ca5eac085d4acd0464f87539874cc33931751",
   "candidate_version": "0.8.5-en.13",
-  "latest_upstream_release": "v0.8.2",
+  "latest_upstream_release": "v0.8.5",
   "status": "candidate-validation-blocked",
   "branch": "main",
   "limitations": [
@@ -14,7 +14,7 @@
     "The official 1.11 archive was verified against upstream's pinned size and SHA-256; five additional private fixtures remain unavailable.",
     "No Go toolchain was available for Go tests or Intel/Apple-silicon packaging. No physical Mac or camera verification was performed."
   ],
-  "upstream_release_url": "https://github.com/Maxwooow/Ricoh-GRMod/releases/tag/v0.8.2",
+  "upstream_release_url": "https://github.com/Maxwooow/Ricoh-GRMod/releases/tag/v0.8.5",
   "candidate_blockers": [
     "Reconcile cumulative three-way conflicts through 0.8.5, including GR III/IIIx families, migration/cache, Direct Flash and look/date/color changes; complete functional equivalence and bilingual UI/bridge review.",
     "Five core tests still require official.decoded, B.bin, C.bin, q400.xmp and c200.xmp; shutdown menu emulation inputs/environment remain incomplete.",
