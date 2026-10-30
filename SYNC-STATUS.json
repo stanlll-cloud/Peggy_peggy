@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-10-28",
+  "checked_at": "2026-10-30",
   "upstream_repository": "Maxwooow/Ricoh-GRMod",
   "published_upstream_commit": "e12ce7f7e1346740619e6df674d39487e507ebd9",
   "published_version": "0.7.5-en.8",
   "candidate_upstream_commit": "1f4216e4b80d737a3e670c0b6169398f57598b5e",
   "candidate_version": "0.8.6-en.14",
-  "latest_upstream_release": "v0.8.5",
+  "latest_upstream_release": "v0.8.6",
   "status": "candidate-validation-blocked",
   "branch": "main",
   "limitations": [
@@ -14,7 +14,7 @@
     "The official 1.11 archive was verified against upstream's pinned size and SHA-256; five additional private fixtures remain unavailable.",
     "No Go toolchain was available for Go tests or Intel/Apple-silicon packaging. No physical Mac or camera verification was performed."
   ],
-  "upstream_release_url": "https://github.com/Maxwooow/Ricoh-GRMod/releases/tag/v0.8.5",
+  "upstream_release_url": "https://github.com/Maxwooow/Ricoh-GRMod/releases/tag/v0.8.6",
   "candidate_blockers": [
     "Reconcile cumulative three-way conflicts through 0.8.6; audit all camera families, migration/cache, Direct Flash exposure/menu repair, film removal and hue-sector serialization/fitting, plus bilingual UI/bridge functional equivalence.",
     "Five core tests still require official.decoded, B.bin, C.bin, q400.xmp and c200.xmp; shutdown menu emulation inputs/environment remain incomplete.",
