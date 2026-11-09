@@ -1,3 +1,11 @@
+## 2026-11-09 — 0.8.10 candidate (publication blocked)
+
+The GitHub release v0.8.10 (2026-11-09 07:29:03 UTC) is tagged at default-branch commit 38e25ffa6055527138167d4e1bce7f57e5c34eb6. Both release-0.8.10 and grmod-0.8.10 point to 31d973415f31847cdf94b7d34775b66553c9cdf3 (package version 0.8.10); exact release binary provenance is unverified. The published Customizer remains 0.7.5-en.8, upstream e12ce7f7e1346740619e6df674d39487e507ebd9.
+
+Compared with fe9ca39, the two upstream commits change GR IV white halation, the HDR gain map curve and the model-specific UI preview; preserve these runtime changes verbatim. See https://github.com/Maxwooow/Ricoh-GRMod/compare/fe9ca39...31d9734. An explicit-base three-way trial against the published fork reports conflicts in README.md, package.json, shell/updates.go, ui/src/app.tsx and ui/src/i18n.ts. Clean upstream web build passed; the test suite had 208 passes, 217 skips, and the same three GR IIIx tests failing on removed bridge APIs. This is not a camera test.
+
+Resolve the five conflicts in a review branch: preserve the English README, attribution and GPL-2.0, branding, Traditional Chinese default, English switch and More Color Recipes link; compare UI event handlers and native bridge calls with the source branch, and limit updater changes to fork destinations. Validate bilingual keys and placeholders. Reconcile the stale test contract against actual upstream behavior and exercise fixture and emulator cases for the new firmware changes. Then build and verify Intel and Apple silicon packages on macOS, check the English PDF, 00-START-HERE.txt and download links, and label camera testing as pending unless completed. Publish only after required verification passes, retain older packages, and verify remote source and ZIP before moving the published baseline. Signed in-app updates remain unconfigured.
+
 # Candidate synchronization plan — 2026-10-17
 
 Published version remains 0.7.5-en.8, upstream baseline e12ce7f7e1346740619e6df674d39487e507ebd9.
