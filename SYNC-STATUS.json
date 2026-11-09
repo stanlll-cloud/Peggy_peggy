@@ -4,9 +4,9 @@
   "upstream_repository": "Maxwooow/Ricoh-GRMod",
   "published_upstream_commit": "e12ce7f7e1346740619e6df674d39487e507ebd9",
   "published_version": "0.7.5-en.8",
-  "candidate_upstream_commit": "fe9ca39fd3353803019c814e2408b50d28e27a3f",
-  "candidate_version": "0.8.9-en.15",
-  "latest_upstream_release": "v0.8.9",
+  "candidate_upstream_commit": "31d973415f31847cdf94b7d34775b66553c9cdf3",
+  "candidate_version": "0.8.10-en.16",
+  "latest_upstream_release": "v0.8.10",
   "status": "candidate-validation-blocked",
   "branch": "main",
   "limitations": [
@@ -14,16 +14,16 @@
     "The official 1.11 archive was verified against upstream's pinned size and SHA-256; five additional private fixtures remain unavailable.",
     "No Go toolchain was available for Go tests or Intel/Apple-silicon packaging. No physical Mac or camera verification was performed."
   ],
-  "upstream_release_url": "https://github.com/Maxwooow/Ricoh-GRMod/releases/tag/v0.8.9",
+  "upstream_release_url": "https://github.com/Maxwooow/Ricoh-GRMod/releases/tag/v0.8.10",
   "candidate_blockers": [
     "Explicit-base three-way merge trial has five conflicts (README.md, package.json, shell/updates.go, ui/src/app.tsx, ui/src/i18n.ts). Finish bilingual UI and bridge behavior review against pinned source.",
-    "Clean upstream at fe9ca39 fails three GR IIIx UI tests invoking removed bridge APIs; the same suite passed 22/22 at 1f4216e4. Resolve test contract and rerun, including firmware fixture and emulator cases skipped in this run.",
+    "Clean upstream 31d9734: web build passed; 208 tests passed, 217 skipped, and three GR IIIx UI tests failed on removed bridge APIs. Firmware fixture and emulator coverage remains incomplete.",
     "Go tests and Customizer Intel/Apple silicon builds, package and documentation checks remain incomplete. See SYNC-CANDIDATE-PLAN.md."
   ],
-  "upstream_release_source_note": "v0.8.7 release published 2026-10-31T07:19:02Z. GitHub compare reports its tag identical to candidate commit 1f4216e4b80d737a3e670c0b6169398f57598b5e and package.json remains 0.8.6. Release notes claim newer camera firmware support, removal of bridge firmware, one update line and a GR IV 1.20 halation fix; these claims are not represented by new commits in the compared source. Reconcile release/source provenance before adopting those changes; no functional verification or fork publication is claimed. v0.8.8 published 2026-11-02T04:11:00Z; GitHub compare again reports its tag identical to candidate 1f4216e4b80d737a3e670c0b6169398f57598b5e, with package.json still 0.8.6. Its release notes claim GR IV/HDF firmware 1.20 Solarized Effect unlocking with B&W looks and removal of the unreleased Pictorialist Effect from the menu order. These release claims have no new source commits in the compared tag and have not been adopted or verified here. Upstream's stated HDF camera test is not a test of this fork. v0.8.9 published 2026-11-06T08:58:15Z. The tag and default branch still point to 1f4216e4 (source 0.8.6), while release-0.8.9 and grmod-0.8.9 both point to fe9ca39fd3353803019c814e2408b50d28e27a3f (source 0.8.9), the proposed source with JPEG HDR gain maps and 5–8 ADJ items. Exact binary provenance is unverified.",
-  "previous_candidate_upstream_commit": "1f4216e4b80d737a3e670c0b6169398f57598b5e",
+  "upstream_release_source_note": "v0.8.7 release published 2026-10-31T07:19:02Z. GitHub compare reports its tag identical to candidate commit 1f4216e4b80d737a3e670c0b6169398f57598b5e and package.json remains 0.8.6. Release notes claim newer camera firmware support, removal of bridge firmware, one update line and a GR IV 1.20 halation fix; these claims are not represented by new commits in the compared source. Reconcile release/source provenance before adopting those changes; no functional verification or fork publication is claimed. v0.8.8 published 2026-11-02T04:11:00Z; GitHub compare again reports its tag identical to candidate 1f4216e4b80d737a3e670c0b6169398f57598b5e, with package.json still 0.8.6. Its release notes claim GR IV/HDF firmware 1.20 Solarized Effect unlocking with B&W looks and removal of the unreleased Pictorialist Effect from the menu order. These release claims have no new source commits in the compared tag and have not been adopted or verified here. Upstream's stated HDF camera test is not a test of this fork. v0.8.9 published 2026-11-06T08:58:15Z. The tag and default branch still point to 1f4216e4 (source 0.8.6), while release-0.8.9 and grmod-0.8.9 both point to fe9ca39fd3353803019c814e2408b50d28e27a3f (source 0.8.9), the proposed source with JPEG HDR gain maps and 5–8 ADJ items. Exact binary provenance is unverified. v0.8.10 published 2026-11-09T07:29:03Z; its tag points to default-branch commit 38e25ffa, while release-0.8.10 and grmod-0.8.10 point to 31d9734 (source 0.8.10). Exact release binary provenance is unverified.",
+  "previous_candidate_upstream_commit": "fe9ca39fd3353803019c814e2408b50d28e27a3f",
   "observed_default_branch_commit": "38e25ffa6055527138167d4e1bce7f57e5c34eb6",
-  "candidate_upstream_branch": "release-0.8.9",
+  "candidate_upstream_branch": "release-0.8.10",
   "default_branch_review": {
     "previous_commit": "1f4216e4b80d737a3e670c0b6169398f57598b5e",
     "changed_paths": [
