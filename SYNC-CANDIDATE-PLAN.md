@@ -1,3 +1,11 @@
+## 2026-11-10 — 0.8.11 source candidate (publication blocked)
+
+Both upstream source branches release-0.8.11 and grmod-0.8.11 point to 469e54731cef5056838f350716b2bb2035ee9b2d. GitHub Latest still returns v0.8.10 and there is no v0.8.11 tag as checked. The published Customizer stays 0.7.5-en.8 at upstream e12ce7f7e1346740619e6df674d39487e507ebd9.
+
+Compared with 31d9734, the source adds optional Auto LCD curves, GR IV 1.20 exposure preview and a soft focus menu entry, and About acknowledgements. See https://github.com/Maxwooow/Ricoh-GRMod/compare/31d9734...469e547. Explicit-base three-way trial still has conflicts in README.md, package.json, shell/updates.go, ui/src/app.tsx and ui/src/i18n.ts. Clean upstream frontend built; tests: 208 passed, 3 failed (existing GR IIIx tests calling removed bridge methods), 231 skipped, including 14 exposure and Auto LCD cases. No Mac packages or camera testing completed.
+
+Resolve the presentation conflicts while preserving the Customizer name, bilingual UI, store promotion, English documentation and GPL attribution. Review the new UI events, store, host bridge, credits fetch/fallback and updater separately against the upstream behavior. Translate new keys and check placeholders. Run the skipped relevant firmware checks with the required fixtures and reconcile the existing UI test failures before Intel and Apple silicon builds and ZIP/guide verification. Keep existing downloads and the published baseline until verification passes.
+
 ## 2026-11-09 — 0.8.10 candidate (publication blocked)
 
 The GitHub release v0.8.10 (2026-11-09 07:29:03 UTC) is tagged at default-branch commit 38e25ffa6055527138167d4e1bce7f57e5c34eb6. Both release-0.8.10 and grmod-0.8.10 point to 31d973415f31847cdf94b7d34775b66553c9cdf3 (package version 0.8.10); exact release binary provenance is unverified. The published Customizer remains 0.7.5-en.8, upstream e12ce7f7e1346740619e6df674d39487e507ebd9.
